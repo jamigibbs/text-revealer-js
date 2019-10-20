@@ -3,9 +3,10 @@ import axios from 'axios';
 import Wikipedia from '../wikipedia/wikipedia';
 import MerriamWebsterDictionary from '../merriam-webster-dictionary/merriam-webster-dictionary';
 
-class RevealerClient {
+class TextRevealer {
   constructor(options = {}) {
-    this.isWikipedia = options.wikipedia;
+    this.delay = options. delay;
+    this.wikipedia = options.wikipedia;
     this.merriamWebsterDictionary = options.merriamWebsterDictionary;
   }
 
@@ -15,11 +16,29 @@ class RevealerClient {
    * @param {string} options.searchText
    * @return {object}
    */
-  init(options = {}) {
+  init() {
+    document.onmouseup = this.debounced(this.delay, this.handleTextReveal.bind(this));
+    if (!document.all) document.captureEvents(Event.MOUSEUP);
+  }
+
+  debounced(delay, fn) {
+    let timerId;
+    return function (...args) {
+      if (timerId) {
+        clearTimeout(timerId);
+      }
+      timerId = setTimeout(() => {
+        fn(...args);
+        timerId = null;
+      }, delay);
+    }
+  }
+
+  handleFetch(options = {}) {
     return new Promise((resolve, reject) => {
       const routes = [];
 
-      if (this.isWikipedia) {
+      if (this.wikipedia) {
         const wikiRoute = Wikipedia.searchRoute(options.searchText);
         routes.push(axios.get(wikiRoute));
       };
@@ -47,6 +66,18 @@ class RevealerClient {
     })
   }
 
+  handleTextReveal() {
+    const text = (document.all) ? document.selection.createRange().text : document.getSelection().toString();
+
+    if (text) {
+      this.handleFetch({ 
+        searchText: text
+      }).then((results) => {
+        console.log('results', results);
+      }).catch((error) => console.log('myRevealer error', error));
+    }
+  };
+
 }
 
-export default RevealerClient;
+export default TextRevealer;

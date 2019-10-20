@@ -29,11 +29,12 @@ module.exports = [
       filename: '_global.js'
     },
     mode: 'production',
-    devtool: undefined,
+    devtool: undefined
   }),
   _.merge({}, baseConfig, {
     output: {
       filename: 'web-dev.js'
-    }
+    },
+    mode: 'development'
   })
 ];
