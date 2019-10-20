@@ -1,0 +1,62 @@
+{
+  "name": "text-revealer-js",
+  "version": "0.1.0",
+  "description": "Reveal deeper information about highlighted text on a web page.",
+  "main": "_global.js",
+  "files": [
+    "_global.js",
+    "web-dev.js"
+  ],
+  "author": {
+    "name": "Jami Gibbs",
+    "email": "jami0821@gmail.com",
+    "url": "http://jamigibbs.com/"
+  },
+  "license": "Envato Market License",
+  "scripts": {
+    "build": "npm run clean:dist && webpack",
+    "build:docs": "npm run clean:docs && jsdoc -c .jsdoc.json",
+    "clean": "npm run clean:dist && npm run clean:docs",
+    "clean:dist": "rm -rf _global.js _global.js.map web-dev.js web-dev.js.map",
+    "clean:docs": "rm -rf docs",
+    "ci": "npm run clean && npm run lint && npm run test && npm run build && npm run build:docs",
+    "lint": "eslint integration-tests/**/*.js src/**/*.js",
+    "prepublishOnly": "npm run build",
+    "serve:docs": "npm run build:docs && http-server ./docs -c-1",
+    "test": "jest src --maxWorkers=2",
+    "test:integration": "jest integration-tests --maxWorkers=2 --coverage=false"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamigibbs/text-revealer-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jamigibbs/text-revealer-js/issues"
+  },
+  "homepage": "https://github.com/jamigibbs/text-revealer-js#readme",
+  "devDependencies": {
+    "@babel/core": "^7.6.2",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/preset-env": "^7.6.2",
+    "@pixi/jsdoc-template": "^2.4.3",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.0.3",
+    "babel-jest": "23.6.0",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-lodash": "^3.3.4",
+    "eslint": "^6.4.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.17.0",
+    "http-server": "^0.11.1",
+    "jest": "23.6.0",
+    "jsdoc": "^3.6.3",
+    "q": "^1.5.1",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9"
+  },
+  "dependencies": {
+    "axios": "^0.19.0",
+    "lodash": "^4.17.15"
+  }
+}
