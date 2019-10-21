@@ -112,7 +112,7 @@ class TextRevealer {
 
   displayPopover(){
     const span = document.createElement("span");
-    span.classList.add('rtjs');
+    span.classList.add('trjs');
     span.tabIndex = '-1';
 
     const popover = document.createElement('dfn');
@@ -138,12 +138,22 @@ class TextRevealer {
 
         if (this.scrollIntoView) {
           span.scrollIntoView({ behavior: "smooth" });
-        } 
+        }
+
+        document.getElementById('trjs-close').addEventListener('click', this.closePopover.bind(this));
         
       }
     }
 
   }
+
+  closePopover(){
+    const textRevealerEl = document.querySelector('.trjs');
+    textRevealerEl.parentNode.replaceChild(document.createTextNode(this.text), textRevealerEl);
+    
+    this.text = null;
+    this.targetTag = null;
+  };
 
 }
 
