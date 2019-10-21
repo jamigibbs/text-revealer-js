@@ -1,19 +1,19 @@
-.rtjs {
+.trjs {
   z-index: 99999;
   user-select: none;
   -moz-user-select: none;
 }
 
-.rtjs dfn {
+.trjs dfn {
   position: relative;
   display: inline-block;
   /* cursor: help; */
 }
-.rtjs dfn:before {
+.trjs dfn:before {
   content: attr(title);
   font-style: normal;
 }
-.rtjs dfn > .dfn-tooltip {
+.trjs dfn > .dfn-tooltip {
   /* display: none; */
   display: block;
   position: absolute; 
@@ -23,7 +23,7 @@
   padding: .5em;
   border: none;
 }
-.rtjs dfn:hover > .dfn-tooltip {
+.trjs dfn:hover > .dfn-tooltip {
   /* display: block;
   position: absolute; 
   top: calc(1em + 5px);
@@ -32,10 +32,10 @@
   padding: .5em;
   border: none; */
 }
-.rtjs .dfn-tooltip {
+.trjs .dfn-tooltip {
   z-index: 9999;
 }
 
-.rtjs .dfn-tooltip img {
+.trjs .dfn-tooltip img {
   max-width: 12em;
 }
