@@ -150,7 +150,9 @@ class TextRevealer {
   closePopover(){
     const textRevealerEl = document.querySelector('.trjs');
     textRevealerEl.parentNode.replaceChild(document.createTextNode(this.text), textRevealerEl);
+    
     this.text = null;
+    this.targetTag = null;
   };
 
 }
