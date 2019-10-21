@@ -95,7 +95,7 @@ class TextRevealer {
       this.text = (document.all) ? document.selection.createRange().text : document.getSelection().toString();
 
       if (this.text) {
-        this.handlePopoverDisplay(this.text);
+        this.displayPopover(this.text);
 
         this.handleFetch({ 
           searchText: this.text
@@ -110,7 +110,7 @@ class TextRevealer {
 
   };
 
-  handlePopoverDisplay(){
+  displayPopover(){
     const span = document.createElement("span");
     span.classList.add('rtjs');
     span.tabIndex = '-1';
