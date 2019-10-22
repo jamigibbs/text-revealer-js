@@ -39,3 +39,8 @@
 .trjs .dfn-tooltip img {
   max-width: 12em;
 }
+
+#trjs-close:hover {
+  cursor: pointer;
+  color: black;
+}

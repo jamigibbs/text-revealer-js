@@ -2,6 +2,10 @@ class Wikipedia {
 
   static baseUrl = 'https://en.wikipedia.org/w/api.php?origin=*';
 
+  /**
+   * Construct the Wikipedia route.
+   * @return {String}
+   */
   static searchRoute(search){
     const wikiParams = {
       action: 'opensearch',

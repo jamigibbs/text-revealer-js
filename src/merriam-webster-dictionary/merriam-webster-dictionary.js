@@ -2,6 +2,10 @@ class MerriamWebsterDictionary {
 
   static baseUrl = 'https://www.dictionaryapi.com/api/v3/references/collegiate/json/';
 
+  /**
+   * Construct the Merriam-Webster Dictionary route.
+   * @return {String}
+   */
   static searchRoute(options = {}){
     const params = {
       key: options.key

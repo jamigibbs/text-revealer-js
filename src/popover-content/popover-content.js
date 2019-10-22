@@ -4,6 +4,10 @@ class PopoverContent {
     this.text = options.text;
   }
 
+  /**
+   * Construct the popover element HTML structure.
+   * @return {Text} Returns the popover content HTML.
+   */
   html(){
     return `
       <button disabled class="dfn-tooltip">
