@@ -2,6 +2,7 @@ class PopoverContent {
 
   constructor(options = {}) {
     this.text = options.text;
+    this.results = options.results;
   }
 
   /**

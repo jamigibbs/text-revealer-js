@@ -23,6 +23,17 @@ class TextRevealer {
 
   init() {
     window.addEventListener('load', () => {
+
+      /**
+       * Adding the on/off toggle to the end of the body tag.
+       */
+      this.addToggle();
+
+      /**
+       * Handlnig when on/off toggle is triggered.
+       */
+      document.querySelector('.trjs-toggle-inner input').addEventListener('change', this.handleToggleChange.bind(this));
+
       /**
        * Getting the target element type to check it against approved and 
        * disabled tags. ie. input
@@ -30,6 +41,7 @@ class TextRevealer {
       document.body.addEventListener('click', (event) => {
         this.targetTag = event.target.localName;
       });
+
       /**
        * Binding the mouseup event to capture selected or highlighted text.
        */
@@ -37,6 +49,34 @@ class TextRevealer {
       if (!document.all) document.captureEvents(Event.MOUSEUP);
 
     });
+  }
+
+  /**
+   * Adding the on/off toggle to the end of the body tag.
+   */
+  addToggle(){
+    const body = document.getElementsByTagName("body")[0];
+    const toggleEl = document.createElement('div');
+
+    toggleEl.classList.add('trjs-toggle-container')
+    toggleEl.innerHTML = `
+    <div class="trjs-toggle-inner"><label class="switch">
+      <input type="checkbox">
+      <span class="slider round"></span>
+    </label></div>`;
+    body.appendChild(toggleEl);
+  }
+
+  /**
+   * Assigning the active state.
+   * @param {Object} - The event fired when on/off is toggled.
+   */
+  handleToggleChange(event){
+    if (event.target.checked) {
+      this.isActive = true;
+    } else {
+      this.isActive = false;
+    }
   }
 
   /**
@@ -107,7 +147,7 @@ class TextRevealer {
      * Only firing if there is a text selection or the selected text is not within a disabled tag type. ie. input field.
      */
     const isDisabledTag = this.disabledTags.find((tag) => tag == this.targetTag);
-    if (this.text || isDisabledTag) return;
+    if (this.text || isDisabledTag || !this.isActive) return;
 
     try {
       this.text = (document.all) ? document.selection.createRange().text : document.getSelection().toString();
@@ -116,8 +156,7 @@ class TextRevealer {
         this.handleFetch({ 
           searchText: this.text
         }).then((results) => {
-          console.log('results', results);
-          this.displayPopover();
+          this.displayPopover(results);
         }).catch((error) => console.log('myRevealer error', error));
       }
 
@@ -129,15 +168,16 @@ class TextRevealer {
 
   /**
    * Construct the popover element and add it to the DOM.
+   * @param {Object} - Results of the Wikipedia, Dictionary, etc. call.
    */
-  displayPopover(){
+  displayPopover(results){
     const span = document.createElement("span");
     span.classList.add('trjs');
     span.tabIndex = '-1';
 
     const popover = document.createElement('dfn');
     popover.title = this.text;
-    popover.innerHTML = new PopoverContent({ text: this.text }).html();
+    popover.innerHTML = new PopoverContent({ text: this.text, results }).html();
 
     if (window.getSelection) {
       const sel = window.getSelection();
