@@ -19,20 +19,35 @@ class TextRevealer {
     this.disabledTags = DEFAULT_DISABLED_TAGS
     this.text = null;
     this.targetTag = null;
+    this.isActive = false;
   }
 
   init() {
     window.addEventListener('load', () => {
-
       /**
-       * Adding the on/off toggle to the end of the body tag.
+       * Adding the on/off toggle to the end of the body tag if it doesn't exist yet.
        */
-      this.addToggle();
+      const toggleEl = document.querySelector('.trjs-toggle-container input');
+      
+      if (!toggleEl) {
+        this.addToggle();
+      }
 
       /**
-       * Handlnig when on/off toggle is triggered.
+       * Handling when on/off toggle is triggered.
        */
       document.querySelector('.trjs-toggle-inner input').addEventListener('change', this.handleToggleChange.bind(this));
+
+      /**
+       * Check if an on/off toggle state already exists.
+       */
+      const localStorage = window.localStorage;
+      const isActiveLocalStorage = localStorage.getItem('trjs-active');
+
+      if (isActiveLocalStorage && toggleEl) {
+        this.isActive = true;
+        toggleEl.checked = 'checked';
+      }
 
       /**
        * Getting the target element type to check it against approved and 
@@ -72,10 +87,14 @@ class TextRevealer {
    * @param {Object} - The event fired when on/off is toggled.
    */
   handleToggleChange(event){
+    const localStorage = window.localStorage;
+
     if (event.target.checked) {
       this.isActive = true;
+      localStorage.setItem('trjs-active', 'true');
     } else {
       this.isActive = false;
+      localStorage.removeItem('trjs-active');
     }
   }
 
