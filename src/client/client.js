@@ -27,27 +27,12 @@ class TextRevealer {
       /**
        * Adding the on/off toggle to the end of the body tag if it doesn't exist yet.
        */
-      const toggleEl = document.querySelector('.trjs-toggle-container input');
-      
-      if (!toggleEl) {
-        this.addToggle();
-      }
+      this.addToggle();
 
       /**
        * Handling when on/off toggle is triggered.
        */
       document.querySelector('.trjs-toggle-inner input').addEventListener('change', this.handleToggleChange.bind(this));
-
-      /**
-       * Check if an on/off toggle state already exists.
-       */
-      const localStorage = window.localStorage;
-      const isActiveLocalStorage = localStorage.getItem('trjs-active');
-
-      if (isActiveLocalStorage && toggleEl) {
-        this.isActive = true;
-        toggleEl.checked = 'checked';
-      }
 
       /**
        * Getting the target element type to check it against approved and 
@@ -71,15 +56,26 @@ class TextRevealer {
    */
   addToggle(){
     const body = document.getElementsByTagName("body")[0];
-    const toggleEl = document.createElement('div');
+    const newToggleEl = document.createElement('div');
 
-    toggleEl.classList.add('trjs-toggle-container')
-    toggleEl.innerHTML = `
+    newToggleEl.classList.add('trjs-toggle-container')
+    newToggleEl.innerHTML = `
     <div class="trjs-toggle-inner"><label class="switch">
       <input type="checkbox">
       <span class="slider round"></span>
     </label></div>`;
-    body.appendChild(toggleEl);
+    body.appendChild(newToggleEl);
+
+    /**
+     * Check if an on/off toggle state already exists.
+     */
+    const localStorage = window.localStorage;
+    const isActiveLocalStorage = localStorage.getItem('trjs-active');
+
+    if (isActiveLocalStorage) {
+      this.isActive = true;
+      newToggleEl.querySelector('input').checked = true;
+    }
   }
 
   /**
