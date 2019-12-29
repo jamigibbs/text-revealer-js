@@ -12,10 +12,9 @@ class PopoverContent {
   html(){
     return `
       <button disabled class="dfn-tooltip">
-        <div id="trjs-close">X</div>
+        <div id="trjs-close">Xxx</div>
         <h4>${this.text}</h4>
         <p>Another word for <strong>thesaurus</strong></p>
-        <p><img src="http://i.imgur.com/G0bl4k7.png" /></p>
       </button>
     `
   }

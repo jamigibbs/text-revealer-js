@@ -25,7 +25,7 @@ class TextRevealer {
   init() {
     window.addEventListener('load', () => {
       /**
-       * Bail if the script is getting loaded in an iframe;
+       * Bail if the script is getting loaded in an iframe.
        */
       if (window.location !== window.parent.location) return;
 
@@ -52,7 +52,6 @@ class TextRevealer {
        */
       document.onmouseup = this.debounced(this.delay, this.handleTextReveal.bind(this));
       if (!document.all) document.captureEvents(Event.MOUSEUP);
-
     });
   }
 
