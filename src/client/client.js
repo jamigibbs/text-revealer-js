@@ -25,7 +25,12 @@ class TextRevealer {
   init() {
     window.addEventListener('load', () => {
       /**
-       * Adding the on/off toggle to the end of the body tag if it doesn't exist yet.
+       * Bail if the script is getting loaded in an iframe;
+       */
+      if (window.location !== window.parent.location) return;
+
+      /**
+       * Adding the on/off toggle to the end of the body tag.
        */
       this.addToggle();
 
