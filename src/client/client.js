@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import DOMPurify from 'dompurify';
 import Wikipedia from '../wikipedia/wikipedia';
 import MerriamWebsterDictionary from '../merriam-webster-dictionary/merriam-webster-dictionary';
 import PopoverContent from '../popover-content/popover-content';
@@ -196,7 +196,13 @@ class TextRevealer {
 
     const popover = document.createElement('dfn');
     popover.title = this.text;
-    popover.innerHTML = new PopoverContent({ text: this.text, results }).html();
+    
+    const cleanContent = DOMPurify.sanitize(new PopoverContent({ 
+      text: this.text, 
+      results 
+    }).html());
+
+    popover.innerHTML = cleanContent;
 
     if (window.getSelection) {
       const sel = window.getSelection();
