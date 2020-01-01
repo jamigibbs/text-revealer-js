@@ -1,4 +1,6 @@
-import axios from 'axios';
+//import axios from 'axios';
+import '../scss/_global.scss';
+
 import DOMPurify from 'dompurify';
 import Wikipedia from '../wikipedia/wikipedia';
 import MerriamWebsterDictionary from '../merriam-webster-dictionary/merriam-webster-dictionary';
@@ -7,242 +9,247 @@ import PopoverContent from '../popover-content/popover-content';
 const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','a','pre'];
 const DEFAULT_DISABLED_TAGS = ['input', 'textarea','code'];
 
-class TextRevealer {
+function TextRevealer(options = {}) {
+  
+  this.options = options = Object.assign({}, options);
 
-  constructor(options = {}) {
-    this.delay = options.delay || 500;
-    this.scrollIntoView = options.scrollIntoView || true;
-    this.approvedTags = options.approvedTags || DEFAULT_APPROVED_TAGS;
-    this.wikipedia = options.wikipedia || false;
-    this.merriamWebsterDictionary = options.merriamWebsterDictionary || false;
-
-    this.disabledTags = DEFAULT_DISABLED_TAGS
-    this.text = null;
-    this.targetTag = null;
-    this.isActive = false;
+  let defaults = {
+    delay: 500,
+    scrollIntoView: true,
+    approvedTags: DEFAULT_APPROVED_TAGS,
+    disabledTags: DEFAULT_DISABLED_TAGS,
+    wikipedia: false,
+    merriamWebsterDictionary: false
   }
 
-  init() {
-    window.addEventListener('load', () => {
-      /**
-       * Bail if the script is getting loaded in an iframe.
-       */
-      if (window.location !== window.parent.location) return;
+  // Set default & user options
+	for (let name in defaults) {
+		!(name in options) && (options[name] = defaults[name]);
+	}
 
-      /**
-       * Adding the on/off toggle to the end of the body tag.
-       */
-      this.addToggle();
+  this.disabledTags = DEFAULT_DISABLED_TAGS
+  this.text = null;
+  this.targetTag = null;
+  this.isActive = false;
 
-      /**
-       * Handling when on/off toggle is triggered.
-       */
-      document.querySelector('.trjs-toggle-inner input').addEventListener('change', this.handleToggleChange.bind(this));
+  return {
+    init: function() {
+      window.addEventListener('load', () => {
+        /**
+         * Bail if the script is getting loaded in an iframe.
+         */
+        if (window.location !== window.parent.location) return;
 
-      /**
-       * Getting the target element type to check it against approved and 
-       * disabled tags. ie. input
-       */
-      document.body.addEventListener('click', (event) => {
-        this.targetTag = event.target.localName;
-      });
+        /**
+         * Adding the on/off toggle to the end of the body tag.
+         */
+        this.addToggle();
 
-      /**
-       * Binding the mouseup event to capture selected or highlighted text.
-       */
-      document.onmouseup = this.debounced(this.delay, this.handleTextReveal.bind(this));
-      if (!document.all) document.captureEvents(Event.MOUSEUP);
-    });
-  }
+        /**
+         * Handling when on/off toggle is triggered.
+         */
+        document.querySelector('.trjs-toggle-inner input').addEventListener('change', this.handleToggleChange.bind(this));
 
-  /**
-   * Adding the on/off toggle to the end of the body tag.
-   */
-  addToggle(){
-    const body = document.getElementsByTagName("body")[0];
-    const newToggleEl = document.createElement('div');
-
-    newToggleEl.classList.add('trjs-toggle-container')
-    newToggleEl.innerHTML = `
-    <div class="trjs-toggle-inner"><label class="switch">
-      <input type="checkbox">
-      <span class="slider round"></span>
-    </label></div>`;
-    body.appendChild(newToggleEl);
-
-    /**
-     * Check if an on/off toggle state already exists.
-     */
-    const localStorage = window.localStorage;
-    const isActiveLocalStorage = localStorage.getItem('trjs-active');
-
-    if (isActiveLocalStorage) {
-      this.isActive = true;
-      newToggleEl.querySelector('input').checked = true;
-    }
-  }
-
-  /**
-   * Assigning the active state.
-   * @param {Object} - The event fired when on/off is toggled.
-   */
-  handleToggleChange(event){
-    const localStorage = window.localStorage;
-
-    if (event.target.checked) {
-      this.isActive = true;
-      localStorage.setItem('trjs-active', 'true');
-    } else {
-      this.isActive = false;
-      localStorage.removeItem('trjs-active');
-    }
-  }
-
-  /**
-   *  Delay execution of provided function.
-   * @param {number}    Timeout value.
-   * @param {function}  Callback after timout has completed.
-   * @return {function} Returns callback.
-   */
-  debounced(delay, fn) {
-    let timerId;
-    return function (...args) {
-      if (timerId) {
-        clearTimeout(timerId);
-      }
-      timerId = setTimeout(() => {
-        fn(...args);
-        timerId = null;
-      }, delay);
-    }
-  }
-
-  /**
-   * Fetching data from various APIs with the selected string. Combining the routes into
-   * a single Axios request.
-   * @param {Object}     options.searchText
-   * @return {Object}  Data from axios get requests.
-   */
-  handleFetch(options = {}) {
-    return new Promise((resolve, reject) => {
-      const routes = [];
-
-      if (this.wikipedia) {
-        const wikiRoute = Wikipedia.searchRoute(options.searchText);
-        routes.push(axios.get(wikiRoute));
-      };
-
-      if (this.merriamWebsterDictionary) {
-        const dictionaryRoute = MerriamWebsterDictionary.searchRoute({
-          searchText: options.searchText,
-          key: this.merriamWebsterDictionary
+        /**
+         * Getting the target element type to eventually check it against approved and 
+         * disabled tags. ie. input
+         */
+        document.body.addEventListener('click', (event) => {
+          this.targetTag = event.target.localName;
         });
-        routes.push(axios.get(dictionaryRoute));
-      }
 
-      return axios.all(routes)
-        .then((data) => {
-          const content = {};
-          /**
-           * Constructing returned data into an object with the API domain name as the key.
-           * ie. { 'en.wikipedia.org': [], 'www.dictionaryapi.com': [] }
-           */
-          data.forEach((api) => {
-            const key = (new URL(api.config.url)).hostname;
-            content[key] = api.data;
-          });
-          
-          resolve(content);
-        })
-        .catch((error) => reject(error));
-    })
-  }
+        /**
+         * Binding the mouseup event to capture selected or highlighted text.
+         */
+        document.onmouseup = this.debounced(this.delay, this.handleTextReveal.bind(this));
+        if (!document.all) document.captureEvents(Event.MOUSEUP);
 
-  /**
-   * Getting the selected text string, fetching the API results, and displaying the popover.
-   */
-  handleTextReveal() {
-    /**
-     * Only firing if there is a text selection or the selected text is not within a disabled tag type. ie. input field.
-     */
-    const isDisabledTag = this.disabledTags.find((tag) => tag == this.targetTag);
-    if (this.text || isDisabledTag || !this.isActive) return;
+      })
+    },
 
-    try {
-      this.text = (document.all) ? document.selection.createRange().text : document.getSelection().toString();
+    addToggle: function() {
+      const body = document.getElementsByTagName("body")[0];
+      const newToggleEl = document.createElement('div');
 
-      if (this.text) {
-        this.handleFetch({ 
-          searchText: this.text
-        }).then((results) => {
-          this.displayPopover(results);
-        }).catch((error) => console.log('myRevealer error', error));
-      }
+      newToggleEl.classList.add('trjs-toggle-container')
 
-    } catch(error) {
-      console.log('selection error: ', error);
-    }
+      const cleanContent = DOMPurify.sanitize(`
+      <div class="trjs-toggle-inner"><label class="switch">
+        <input type="checkbox">
+        <span class="slider round"></span>
+      </label></div>`)
 
-  };
-
-  /**
-   * Construct the popover element and add it to the DOM.
-   * @param {Object} - Results of the Wikipedia, Dictionary, etc. call.
-   */
-  displayPopover(results){
-    const span = document.createElement("span");
-    span.classList.add('trjs');
-    span.tabIndex = '-1';
-
-    const popover = document.createElement('dfn');
-    popover.title = this.text;
-    
-    const cleanContent = DOMPurify.sanitize(new PopoverContent({ 
-      text: this.text, 
-      results 
-    }).html());
-
-    popover.innerHTML = cleanContent;
-
-    if (window.getSelection) {
-      const sel = window.getSelection();
+      newToggleEl.innerHTML = cleanContent;
       
-      const parentTag = sel.anchorNode.parentElement.nodeName.toLowerCase();
-      const isApprovedTag = this.approvedTags.find((tag) => tag === parentTag);
+      body.appendChild(newToggleEl);
 
-      if (isApprovedTag && sel.rangeCount) {
+      /**
+       * Check if an on/off toggle setting already exists to assign previous toggle position.
+       */
+      const localStorage = window.localStorage;
+      const isActiveLocalStorage = localStorage.getItem('trjs-active');
 
-        const range = sel.getRangeAt(0).cloneRange();
-        range.surroundContents(span);
+      if (isActiveLocalStorage) {
+        this.isActive = true;
+        newToggleEl.querySelector('input').checked = true;
+      }
+    },
 
-        sel.removeAllRanges();
-        sel.addRange(range);
+    /**
+     * Assigning the active state.
+     * @param {Object} - The event fired when on/off is toggled.
+     */
+    handleToggleChange: function(event) {
+      const localStorage = window.localStorage;
 
-        span.innerHTML = '';
-        span.appendChild(popover);
+      if (event.target.checked) {
+        this.isActive = true;
+        localStorage.setItem('trjs-active', 'true');
+      } else {
+        this.isActive = false;
+        localStorage.removeItem('trjs-active');
+      }
+    },
 
-        if (this.scrollIntoView) {
-          span.scrollIntoView({ behavior: "smooth" });
+    /**
+     *  Delay execution of provided function.
+     * @param {number}    Timeout value.
+     * @param {function}  Callback after timout has completed.
+     * @return {function} Returns callback.
+     */
+    debounced(delay, fn) {
+      let timerId;
+      return function (...args) {
+        if (timerId) {
+          clearTimeout(timerId);
+        }
+        timerId = setTimeout(() => {
+          fn(...args);
+          timerId = null;
+        }, delay);
+      }
+    },
+
+    /**
+     * Getting the selected text string, fetching the API results, and displaying the popover.
+     */
+    handleTextReveal: function(event) {
+      /**
+       * Only firing if there is a text selection or the selected text is not within a disabled tag type. ie. input field.
+       */
+      const isDisabledTag = options.disabledTags.find((tag) => tag == this.targetTag);
+      if (this.text || isDisabledTag || !this.isActive) return;
+
+      try {
+        this.text = (document.all) ? document.selection.createRange().text : document.getSelection().toString();
+
+        if (this.text) {
+          this.handleFetch(this.text).then((results) => {
+            console.log('results', results);
+            this.displayPopover(results);
+          }).catch((error) => console.log('myRevealer error', error));
         }
 
-        document.getElementById('trjs-close').addEventListener('click', this.closePopover.bind(this));
-        
+      } catch(error) {
+        console.log('selection error: ', error);
       }
+    },
+
+    /**
+     * Fetching data from various APIs with the selected string. Combining the routes into
+     * a single Axios request.
+     * @param {String}   searchText
+     * @return {Object}  Data from axios get requests.
+     */
+    handleFetch: function(searchText) {
+      return new Promise((resolve, reject) => {
+        const promises = [];
+
+        if (options.wikipedia) {
+          const wikiRoute = Wikipedia().searchRoute(searchText);
+          const wikiPromise = fetch(wikiRoute)
+            .then(res => ({ res: res.json(), route: 'wiki' }));
+
+          promises.push(wikiPromise);
+        };
+
+        if (options.merriamWebsterDictionary) {
+          const dictionaryRoute = MerriamWebsterDictionary().searchRoute({
+            searchText: searchText,
+            key: options.merriamWebsterDictionary
+          });
+
+          const dictionaryPromise = fetch(dictionaryRoute)
+            .then(res => ({ res: res.json(), route: 'dictionary' }));
+
+          promises.push(dictionaryPromise);
+        }
+
+        Promise.all(promises).then((res)=> {
+          resolve(res);
+        })
+        .catch((error) => reject(error));;
+      })
+    },
+
+    /**
+     * Construct the popover element and add it to the DOM.
+     * @param {Object} - Results of the Wikipedia, Dictionary, etc. call.
+     */
+    displayPopover: function(results){
+      const span = document.createElement("span");
+      span.classList.add('trjs');
+      span.tabIndex = '-1';
+
+      const popover = document.createElement('dfn');
+      popover.title = this.text;
+      
+      const cleanContent = DOMPurify.sanitize(new PopoverContent({ 
+        text: this.text, 
+        results 
+      }).html());
+
+      popover.innerHTML = cleanContent;
+
+      if (window.getSelection) {
+        const sel = window.getSelection();
+        
+        const parentTag = sel.anchorNode.parentElement.nodeName.toLowerCase();
+        const isApprovedTag = options.approvedTags.find((tag) => tag === parentTag);
+
+        if (isApprovedTag && sel.rangeCount) {
+
+          const range = sel.getRangeAt(0).cloneRange();
+          range.surroundContents(span);
+
+          sel.removeAllRanges();
+          sel.addRange(range);
+
+          span.innerHTML = '';
+          span.appendChild(popover);
+
+          if (this.scrollIntoView) {
+            span.scrollIntoView({ behavior: "smooth" });
+          }
+
+          document.getElementById('trjs-close').addEventListener('click', this.closePopover.bind(this));
+          
+        }
+      }
+    },
+
+    /**
+     * Remove the popover element from the DOM and replace with the selected text.
+     */
+    closePopover: function(){
+      const textRevealerEl = document.querySelector('.trjs');
+      textRevealerEl.parentNode.replaceChild(document.createTextNode(this.text), textRevealerEl);
+      
+      this.text = null;
+      this.targetTag = null;
     }
 
   }
-
-  /**
-   * Remove the popover element from the DOM and replace with the selected text.
-   */
-  closePopover(){
-    const textRevealerEl = document.querySelector('.trjs');
-    textRevealerEl.parentNode.replaceChild(document.createTextNode(this.text), textRevealerEl);
-    
-    this.text = null;
-    this.targetTag = null;
-  };
-
-}
+};
 
 export default TextRevealer;

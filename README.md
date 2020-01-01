@@ -12,22 +12,26 @@ Install dependencies:
 
 `npm install`
 
-Assign Options in `src/index.js`:
-
-```js
-  const myRevealer = new TextRevealer({
-    wikipedia: true,
-    merriamWebsterDictionary: false
-  });
-```
-
 Generate compiled script and style:
 
-`npm run build`
+`npm run build:rollup`
 
 Load script and stylesheet:
 
 ```html
-<script type="text/javascript" src="/text-revealer-js/_global.js"></script>
-<link rel="stylesheet" type="text/css" href="/text-revealer-js/_global.css">
+    <link href="text-revealer.css" rel="stylesheet">
+    <script src="text-revealer.js"></script>
+```
+
+Assign options and initalize the script:
+
+```js
+  const myTextRevealer = new TextRevealer({ 
+    wikipedia: true,
+    merriamWebsterDictionary: false,
+    delay: 500,
+    scrollIntoView: true
+  });
+
+  myTextRevealer.init();
 ```

@@ -1,21 +1,21 @@
-class MerriamWebsterDictionary {
+const MerriamWebsterDictionary = {
 
-  static baseUrl = 'https://www.dictionaryapi.com/api/v3/references/collegiate/json/';
+  baseUrl: 'https://www.dictionaryapi.com/api/v3/references/collegiate/json/',
 
   /**
    * Construct the Merriam-Webster Dictionary route.
    * @return {String}
    */
-  static searchRoute(options = {}){
+  searchRoute: (options = {}) => {
     const params = {
       key: options.key
     };
 
-    let route = `${this.baseUrl}/${options.searchText}?`;
+    let dictionaryRoute = `${baseUrl}/${options.searchText}?`;
 
-    Object.keys(params).forEach((key) => {route += "&" + key + "=" + params[key];});
+    Object.keys(params).forEach((key) => {dictionaryRoute += "&" + key + "=" + params[key];});
 
-    return route;
+    return dictionaryRoute;
   }
 
 }

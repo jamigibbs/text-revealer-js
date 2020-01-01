@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const baseConfig = {
   entry: {
-    main: ['./src/index.js', './src/scss/_global.scss']
+    main: ['./src/client/client.js', './src/scss/_global.scss']
   },
   module: {
     rules: [
@@ -40,7 +40,10 @@ const baseConfig = {
   },
   target: 'web',
   devtool: 'source-map',
-  mode: 'development'
+  mode: 'development',
+  optimization: {
+    minimize: false
+  }
 };
 
 module.exports = [
@@ -49,7 +52,8 @@ module.exports = [
       filename: '_global.js'
     },
     mode: 'production',
-    devtool: undefined
+    devtool: undefined,
+    
   }),
   _.merge({}, baseConfig, {
     output: {

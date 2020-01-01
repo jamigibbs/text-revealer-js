@@ -1,0 +1,89 @@
+.trjs {
+  z-index: 99999;
+  user-select: none;
+  -moz-user-select: none; }
+  .trjs dfn {
+    position: relative;
+    display: inline-block;
+    /* cursor: help; */ }
+    .trjs dfn:before {
+      content: attr(title);
+      font-style: normal; }
+    .trjs dfn > .dfn-popover {
+      /* display: none; */
+      display: block;
+      position: absolute;
+      width: 25em;
+      min-height: 15em;
+      background: #ffffff;
+      padding: .5em;
+      border: none;
+      -webkit-box-shadow: 0px 0px 9px 1px #cccccc;
+      -moz-box-shadow: 0px 0px 9px 1px #cccccc;
+      box-shadow: 0px 0px 9px 1px #cccccc; }
+  .trjs .dfn-popover {
+    z-index: 9999; }
+  .trjs__header {
+    font-size: 24px;
+    color: #333333;
+    text-align: center;
+    margin: 20px 0; }
+
+#trjs-close {
+  text-align: right; }
+  #trjs-close:hover {
+    cursor: pointer;
+    color: black; }
+
+.trjs-toggle-container {
+  position: absolute;
+  display: block !important; }
+  .trjs-toggle-container .trjs-toggle-inner {
+    position: fixed;
+    bottom: 60px;
+    left: 50px;
+    z-index: 999; }
+  .trjs-toggle-container .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px; }
+    .trjs-toggle-container .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0; }
+      .trjs-toggle-container .switch input:checked + .slider {
+        background-color: #2196F3; }
+      .trjs-toggle-container .switch input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3; }
+      .trjs-toggle-container .switch input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px); }
+  .trjs-toggle-container .slider {
+    background-color: #ccc;
+    bottom: 0;
+    position: absolute;
+    cursor: pointer;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0;
+    -webkit-transition: .4s;
+    transition: .4s; }
+    .trjs-toggle-container .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s; }
+    .trjs-toggle-container .slider.round {
+      border-radius: 34px; }
+      .trjs-toggle-container .slider.round:before {
+        border-radius: 50%; }
