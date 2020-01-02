@@ -1,7 +1,7 @@
-function PopoverContent(options = {}) {
+function PopoverContent(content = {}) {
 
-  this.text = options.text;
-  this.results = options.results;
+  this.content = content = Object.assign({}, content);
+  console.log('content', content);
 
   return {
     /**
@@ -12,7 +12,7 @@ function PopoverContent(options = {}) {
       return `
         <button disabled class="dfn-popover">
           <div id="trjs-close">X</div>
-          <h4 class="trjs__header">${this.text}</h4>
+          <h4 class="trjs__header">${content.selected}</h4>
           <p>Laboris minus velit, blanditiis malesuada curabitur consequat aliqua mollit ipsam! Tortor debitis, earum, augue ipsam cupiditate maecenas dictum diam viverra aliquip facere dolores platea, blandit, mi auctor quasi anim laudantium.</p>
         </div>
       `

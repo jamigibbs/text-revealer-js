@@ -1208,32 +1208,34 @@
 
   }
 
-  const MerriamWebsterDictionary = {
+  function MerriamWebsterDictionary() {
 
-    baseUrl: 'https://www.dictionaryapi.com/api/v3/references/collegiate/json/',
+    const baseUrl = 'https://www.dictionaryapi.com/api/v3/references/collegiate/json/';
 
-    /**
-     * Construct the Merriam-Webster Dictionary route.
-     * @return {String}
-     */
-    searchRoute: (options = {}) => {
-      const params = {
-        key: options.key
-      };
+    return {
+      /**
+       * Construct the Merriam-Webster Dictionary route.
+       * @return {String}
+       */
+      searchRoute: (options = {}) => {
+        const params = {
+          key: options.key
+        };
 
-      let dictionaryRoute = `${baseUrl}/${options.searchText}?`;
+        let dictionaryRoute = `${baseUrl}/${options.searchText}?`;
 
-      Object.keys(params).forEach((key) => {dictionaryRoute += "&" + key + "=" + params[key];});
+        Object.keys(params).forEach((key) => {dictionaryRoute += "&" + key + "=" + params[key];});
 
-      return dictionaryRoute;
+        return dictionaryRoute;
+      }
     }
 
-  };
+  }
 
-  function PopoverContent(options = {}) {
+  function PopoverContent(content = {}) {
 
-    this.text = options.text;
-    this.results = options.results;
+    this.content = content = Object.assign({}, content);
+    console.log('content', content);
 
     return {
       /**
@@ -1244,7 +1246,7 @@
         return `
         <button disabled class="dfn-popover">
           <div id="trjs-close">X</div>
-          <h4 class="trjs__header">${this.text}</h4>
+          <h4 class="trjs__header">${content.selected}</h4>
           <p>Laboris minus velit, blanditiis malesuada curabitur consequat aliqua mollit ipsam! Tortor debitis, earum, augue ipsam cupiditate maecenas dictum diam viverra aliquip facere dolores platea, blandit, mi auctor quasi anim laudantium.</p>
         </div>
       `
@@ -1399,8 +1401,14 @@
 
           if (this.text) {
             this.handleFetch(this.text).then((results) => {
-              this.displayPopover(results);
-            }).catch((error) => console.log('myRevealer error', error));
+              
+              const formatedResults = results.reduce((acc, curr) => {
+                acc[curr.route] = curr.data;
+                return acc;
+              }, {});
+
+              this.displayPopover(formatedResults);
+            }).catch((error) => console.log('handleFetch error', error));
           }
 
         } catch(error) {
@@ -1421,7 +1429,10 @@
           if (options.wikipedia) {
             const wikiRoute = Wikipedia().searchRoute(searchText);
             const wikiPromise = fetch(wikiRoute)
-              .then(res => ({ res: res.json(), route: 'wiki' }));
+              .then(res => res.json())
+              .then(data => {
+                return { data, route: 'wiki' }
+              });
 
             promises.push(wikiPromise);
           }
@@ -1432,7 +1443,10 @@
             });
 
             const dictionaryPromise = fetch(dictionaryRoute)
-              .then(res => ({ res: res.json(), route: 'dictionary' }));
+            .then(res => res.json())
+            .then(data => {
+              return { data, route: 'dictionary' }
+            });
 
             promises.push(dictionaryPromise);
           }
@@ -1456,7 +1470,7 @@
         popover.title = this.text;
         
         const cleanContent = purify.sanitize(new PopoverContent({ 
-          text: this.text, 
+          selected: this.text, 
           results 
         }).html());
 
