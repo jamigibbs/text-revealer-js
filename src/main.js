@@ -68,9 +68,8 @@ function TextRevealer(options = {}) {
         /**
          * Binding the mouseup event to capture selected or highlighted text.
          */
-        document.onmouseup = this.debounced(this.delay, this.handleTextReveal.bind(this));
+        document.onmouseup = this.debounced(options.delay, this.handleTextReveal.bind(this));
         if (!document.all) document.captureEvents(Event.MOUSEUP);
-
       })
     },
 
