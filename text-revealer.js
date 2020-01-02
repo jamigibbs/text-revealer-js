@@ -1,6 +1,6 @@
 /**
  * 
- *  Text Expander JS v0.1.0
+ *  Text Revealer JS v0.1.0
  *  @author	jamigibbs   <jami0821@gmail.com>
  *  @license MIT
  */
@@ -1251,8 +1251,6 @@
     }
 
   }
-
-  //import axios from 'axios';
 
   const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','a','pre'];
   const DEFAULT_DISABLED_TAGS = ['input', 'textarea','code'];

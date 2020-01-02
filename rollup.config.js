@@ -6,7 +6,7 @@ import banner from 'rollup-plugin-banner';
 import bannerInfo from './src/utils/banner.js';
 
 module.exports = {
-  input: 'src/client/client.js',
+  input: 'src/main.js',
   output: {
     file: 'text-revealer.js',
     format: 'umd', 

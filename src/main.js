@@ -1,10 +1,9 @@
-//import axios from 'axios';
-import '../scss/_global.scss';
+import './scss/_global.scss';
 
 import DOMPurify from 'dompurify';
-import Wikipedia from '../wikipedia/wikipedia';
-import MerriamWebsterDictionary from '../merriam-webster-dictionary/merriam-webster-dictionary';
-import PopoverContent from '../popover-content/popover-content';
+import Wikipedia from './routes/wikipedia/wikipedia';
+import MerriamWebsterDictionary from './routes/merriam-webster-dictionary/merriam-webster-dictionary';
+import PopoverContent from './popover-content/popover-content';
 
 const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','a','pre'];
 const DEFAULT_DISABLED_TAGS = ['input', 'textarea','code'];
@@ -27,7 +26,7 @@ function TextRevealer(options = {}) {
 		!(name in options) && (options[name] = defaults[name]);
 	}
 
-  this.disabledTags = DEFAULT_DISABLED_TAGS
+  this.disabledTags = DEFAULT_DISABLED_TAGS;
   this.text = null;
   this.targetTag = null;
   this.isActive = false;
