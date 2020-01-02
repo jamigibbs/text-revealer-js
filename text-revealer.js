@@ -1480,7 +1480,7 @@
             span.innerHTML = '';
             span.appendChild(popover);
 
-            if (this.scrollIntoView) {
+            if (options.scrollIntoView) {
               span.scrollIntoView({ behavior: "smooth" });
             }
 
