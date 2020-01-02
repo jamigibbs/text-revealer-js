@@ -1178,6 +1178,7 @@
   }
 
   var purify = createDOMPurify();
+  //# sourceMappingURL=purify.es.js.map
 
   function Wikipedia() {
 
@@ -1297,11 +1298,19 @@
           document.querySelector('.trjs-toggle-inner input').addEventListener('change', this.handleToggleChange.bind(this));
 
           /**
-           * Getting the target element type to eventually check it against approved and 
-           * disabled tags. ie. input
+           * Watching for clicks on the document body. 
+           * 
+           * If the click happened outside an active text revealer popover, 
+           * we close the active popover. Otherwise, set the targeted tag for
+           * eventually displaying a new popover.
            */
           document.body.addEventListener('click', (event) => {
-            this.targetTag = event.target.localName;
+            const textRevealerEl = document.querySelector('.trjs');
+            if (textRevealerEl && this.text && !textRevealerEl.contains(event.target)) {
+              this.closePopover();
+            } else {
+              this.targetTag = event.target.localName;
+            }
           });
 
           /**
@@ -1391,7 +1400,6 @@
 
           if (this.text) {
             this.handleFetch(this.text).then((results) => {
-              console.log('results', results);
               this.displayPopover(results);
             }).catch((error) => console.log('myRevealer error', error));
           }
