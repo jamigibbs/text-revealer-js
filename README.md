@@ -14,7 +14,7 @@ Install dependencies:
 
 Generate compiled script and style:
 
-`npm run build:rollup`
+`npm run build`
 
 Load script and stylesheet:
 
