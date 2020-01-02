@@ -124,7 +124,7 @@ function TextRevealer(options = {}) {
      * @param {function}  Callback after timout has completed.
      * @return {function} Returns callback.
      */
-    debounced(delay, fn) {
+    debounced: function(delay, fn) {
       let timerId;
       return function (...args) {
         if (timerId) {
