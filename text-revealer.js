@@ -1,3 +1,10 @@
+/**
+ * 
+ *  Text Expander JS v0.1.0
+ *  @author	jamigibbs   <jami0821@gmail.com>
+ *  @license MIT
+ */
+
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
   typeof define === 'function' && define.amd ? define(factory) :
@@ -1171,7 +1178,6 @@
   }
 
   var purify = createDOMPurify();
-  //# sourceMappingURL=purify.es.js.map
 
   function Wikipedia() {
 

@@ -8,11 +8,11 @@
     "web-dev.js"
   ],
   "author": {
-    "name": "Jami Gibbs",
+    "name": "jamigibbs",
     "email": "jami0821@gmail.com",
     "url": "http://jamigibbs.com/"
   },
-  "license": "TBD",
+  "license": "MIT",
   "scripts": {
     "build": "npm run clean:dist && webpack --watch",
     "build:rollup": "npm run clean:rollup && rollup --watch -c rollup.config.js",
@@ -60,6 +60,7 @@
     "postcss-loader": "^3.0.0",
     "q": "^1.5.1",
     "rollup": "^1.27.14",
+    "rollup-plugin-banner": "^0.2.1",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-json": "^4.0.0",
     "rollup-plugin-node-builtins": "^2.1.2",
