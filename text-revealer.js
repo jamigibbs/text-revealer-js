@@ -1272,9 +1272,9 @@
     };
 
     // Set default & user options
-  	for (let name in defaults) {
-  		!(name in options) && (options[name] = defaults[name]);
-  	}
+    for (let name in defaults) {
+      !(name in options) && (options[name] = defaults[name]);
+    }
 
     this.disabledTags = DEFAULT_DISABLED_TAGS;
     this.text = null;
@@ -1401,7 +1401,7 @@
 
           if (this.text) {
             this.handleFetch(this.text).then((results) => {
-              
+
               const formatedResults = results.reduce((acc, curr) => {
                 acc[curr.route] = curr.data;
                 return acc;

@@ -1,8 +1,8 @@
 import './scss/_global.scss';
 
 import DOMPurify from 'dompurify';
-import Wikipedia from './routes/wikipedia/wikipedia';
-import MerriamWebsterDictionary from './routes/merriam-webster-dictionary/merriam-webster-dictionary';
+import Wikipedia from './routes/wikipedia';
+import MerriamWebsterDictionary from './routes/merriam-webster-dictionary';
 import PopoverContent from './popover-content/popover-content';
 
 const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','a','pre'];
@@ -22,9 +22,9 @@ function TextRevealer(options = {}) {
   }
 
   // Set default & user options
-	for (let name in defaults) {
-		!(name in options) && (options[name] = defaults[name]);
-	}
+  for (let name in defaults) {
+    !(name in options) && (options[name] = defaults[name]);
+  }
 
   this.disabledTags = DEFAULT_DISABLED_TAGS;
   this.text = null;
@@ -151,8 +151,14 @@ function TextRevealer(options = {}) {
 
         if (this.text) {
           this.handleFetch(this.text).then((results) => {
-            this.displayPopover(results);
-          }).catch((error) => console.log('myRevealer error', error));
+
+            const formatedResults = results.reduce((acc, curr) => {
+              acc[curr.route] = curr.data;
+              return acc;
+            }, {})
+
+            this.displayPopover(formatedResults);
+          }).catch((error) => console.log('handleFetch error', error));
         }
 
       } catch(error) {
@@ -173,7 +179,10 @@ function TextRevealer(options = {}) {
         if (options.wikipedia) {
           const wikiRoute = Wikipedia().searchRoute(searchText);
           const wikiPromise = fetch(wikiRoute)
-            .then(res => ({ res: res.json(), route: 'wiki' }));
+            .then(res => res.json())
+            .then(data => {
+              return { data, route: 'wiki' }
+            });
 
           promises.push(wikiPromise);
         };
@@ -185,7 +194,10 @@ function TextRevealer(options = {}) {
           });
 
           const dictionaryPromise = fetch(dictionaryRoute)
-            .then(res => ({ res: res.json(), route: 'dictionary' }));
+          .then(res => res.json())
+          .then(data => {
+            return { data, route: 'dictionary' }
+          });
 
           promises.push(dictionaryPromise);
         }
@@ -210,7 +222,7 @@ function TextRevealer(options = {}) {
       popover.title = this.text;
       
       const cleanContent = DOMPurify.sanitize(new PopoverContent({ 
-        text: this.text, 
+        selected: this.text, 
         results 
       }).html());
 
