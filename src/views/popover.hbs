@@ -2,15 +2,21 @@
   <div id="trjs-close">X</div>
   <h4 class="trjs__header">{{ selected }}</h4>
 
-  {{#if data.wiki}}
+  {{#if data.wikiSummary}}
+  <h4>First Wiki Result</h4>
+  <a href="{{data.wikiSummary.link}}" target="_blank">{{data.wikiSummary.title}}</a>
+  <p>{{data.wikiSummary.summary}}</p>
+  {{/if}}
+
+  {{#if data.wikiSearch}}
   <ul>
-    {{#each data.wiki}}
-      <li><a href="{{this.link}}" target="_blank">{{this.match}}</a></li>
+    {{#each data.wikiSearch}}
+      <li><a href="{{this.link}}" target="_blank">{{this.title}}</a></li>
     {{/each}}
   </ul>
   {{/if}}
 
-  {{#if data.dictionary}}
+  {{#if data.dictionary.shortdef}}
   <a href="{{data.dictionary.link}}" target="_blank">{{selected}}</a>
   <ul>
     {{#each data.dictionary.shortdef}}
@@ -20,4 +26,10 @@
   <p>Date: {{data.dictionary.date}}</p>
   <p>Fl: {{data.dictionary.fl}}</p>
   {{/if}}
+
+  {{#unless data.wikiSearch}}
+    {{#unless data.dictionary.shortDef}}
+      <p>Sorry, no results found.</p>
+    {{/unless}}
+  {{/unless}}
 </button>

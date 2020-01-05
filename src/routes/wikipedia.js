@@ -1,12 +1,13 @@
 const Wikipedia = {
 
   baseUrl: 'https://en.wikipedia.org/w/api.php?origin=*',
+  baseRestApiUrl: 'https://en.wikipedia.org/api/rest_v1/page/summary/Stack_Overflow',
   /**
    * Construct the Wikipedia route.
    * @return {String}
    */
   searchRoute: function(search) {
-    const wikiParams = {
+    const params = {
       action: 'opensearch',
       search,
       limit: '5',
@@ -14,22 +15,42 @@ const Wikipedia = {
       format: 'json'
     };
 
-    let wikiRoute = this.baseUrl;
+    let route = this.baseUrl;
 
-    Object.keys(wikiParams).forEach((key) => {wikiRoute += "&" + key + "=" + wikiParams[key];});
+    Object.keys(params).forEach((key) => {route += "&" + key + "=" + params[key];});
 
-    return wikiRoute;
+    return route;
   },
 
-  formattedData: function(res) {
-    let wikiArr = [];
+  queryRoute: function(text) {
+    const params = {
+      action: 'query',
+      prop: 'extracts',
+      exsentences: 2,
+      format: 'json',
+      titles: text
+    }
+
+    let route = this.baseUrl + '&exintro&explaintext';
+
+    Object.keys(params).forEach((key) => {route += "&" + key + "=" + params[key];});
+
+    return route;
+  },
+
+  summaryRoute: function(articleTitle){
+    return `https://en.wikipedia.org/api/rest_v1/page/summary/${articleTitle}`
+  },
+
+  formattedSearchData: function(res) {
+    let arr = [];
     for (let i = 0; i < res.data[1].length; i++) {
-      wikiArr.push({
-        match: res.data[1][i],
+      arr.push({
+        title: res.data[1][i],
         link: res.data[3][i]
       });
     }
-    return wikiArr;
+    return arr;
   }
 
 }

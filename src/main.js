@@ -149,31 +149,70 @@ function TextRevealer(options = {}) {
         this.text = (document.all) ? document.selection.createRange().text : document.getSelection().toString();
 
         if (this.text) {
-          this.handleFetch(this.text).then((results) => {
-            this.routePromises = [];
+          this.handleFetch(this.text)
+            .then((results) => {
+              this.routePromises = [];
 
-            const formatedResults = results.reduce((acc, curr) => {
-              if (curr.route === 'wiki') {
-                acc[curr.route] = Wikipedia.formattedData(curr);
-              } else if (curr.route === 'dictionary') {
-                acc[curr.route] = MerriamWebsterDictionary.formattedData(curr, this.text);
+              const formattedResults = results.reduce((acc, curr) => {
+                if (curr.route === 'wikiSearch') {
+                  acc[curr.route] = Wikipedia.formattedSearchData(curr);
+                } else if (curr.route === 'wikiQuery'){
+                  acc[curr.route] = curr.data;
+                } else if (curr.route === 'dictionary') {
+                  acc[curr.route] = MerriamWebsterDictionary.formattedData(curr, this.text);
+                }
+                return acc;
+              }, {})
+
+              return formattedResults;
+            })
+            .then((formattedResults) => {
+              const isWikiResults = formattedResults.wikiSearch.length > 0;
+
+              if (!isWikiResults) {
+                formattedResults.wikiSearch = null;
               }
-              return acc;
-            }, {})
+              
+              if (isWikiResults) {
+                // Getting the excerpt for the first returned wiki article.
+                const wikiArticleTitle = formattedResults.wikiSearch[0].title;
 
-            this.displayPopover(formatedResults);
-          }).catch((error) => console.log('handleFetch error', error));
+                /**
+                 * We have to first get the wiki search results list before we can get a summary for the
+                 * first returned article (done below). The search endpoint does not return wiki page summary info.
+                 * We have to use the REST API summary route instead.
+                 */
+                if (wikiArticleTitle) {
+                  fetch(Wikipedia.summaryRoute(wikiArticleTitle))
+                    .then((res) => res.json())
+                    .then((data) => {
+                      formattedResults.wikiSummary = {
+                        title: formattedResults.wikiSearch[0].title,
+                        summary: data.extract,
+                        link: formattedResults.wikiSearch[0].link
+                      }
+                      /**
+                       * Remove the first result item because we're using it for the wikiSummary item.
+                       */
+                      formattedResults.wikiSearch.shift();
+                      
+                      console.log('formattedResults', formattedResults)
+                      this.displayPopover(formattedResults);
+                    });
+                } else {
+                  this.displayPopover(formattedResults);
+                }
+              } else {
+                this.displayPopover(formattedResults);
+              }
+            })
+            .catch((error) => console.log('wiki summaryRoute error', error));
         }
 
       } catch(error) {
         console.error('handleTextReveal error: ', error);
       }
     },
-
-    /**
-     * Collecting all routes for an eventual Promise.all.
-     */
-    routePromises: [],
 
     /**
      * Utility function using Fetch API to request route data.
@@ -185,9 +224,8 @@ function TextRevealer(options = {}) {
         .then((res) => res.json())
         .then((data) => {
           return { data, route: name }
-        });
-
-      this.routePromises.push(routePromise);
+        })
+      return routePromise;
     },
 
     /**
@@ -197,14 +235,17 @@ function TextRevealer(options = {}) {
      * @return {Object}  Data from fetch requests.
      */
     handleFetch: function(searchText) {
+      let routePromises = [];
+
       return new Promise((resolve, reject) => {
 
         /**
          * Wikipedia Route.
          */
         if (options.wikipedia) {
-          const wikiRoute = Wikipedia.searchRoute(searchText);
-          this.fetchRoute('wiki', wikiRoute);
+          const wikiSearchRoute = Wikipedia.searchRoute(searchText);
+          const wikiRoutePromise = this.fetchRoute('wikiSearch', wikiSearchRoute);
+          routePromises.push(wikiRoutePromise);
         };
 
         /**
@@ -215,10 +256,11 @@ function TextRevealer(options = {}) {
             searchText: searchText,
             key: options.merriamWebsterDictionary
           });
-          this.fetchRoute('dictionary', dictionaryRoute);
+          const dictionaryRoutePromise = this.fetchRoute('dictionary', dictionaryRoute);
+          routePromises.push(dictionaryRoutePromise);
         }
 
-        Promise.all(this.routePromises).then((res)=> {
+        Promise.all(routePromises).then((res)=> {
           resolve(res);
         })
         .catch((error) => reject(error));;
@@ -234,7 +276,6 @@ function TextRevealer(options = {}) {
       span.classList.add('trjs');
       span.tabIndex = '-1';
 
-      console.log('data', data);
       const popover = document.createElement('dfn');
       popover.title = this.text;
       popover.innerHTML = PopoverTemplate({ selected: this.text, data });

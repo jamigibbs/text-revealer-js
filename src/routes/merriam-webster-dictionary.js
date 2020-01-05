@@ -18,11 +18,19 @@ const MerriamWebsterDictionary = {
   },
 
   formattedData: function(res, text){
+    if (res.data.length > 0 ) {
+      return {
+        shortdef: res.data[0].shortdef,
+        date: res.data[0].date,
+        fl: res.data[0].fl,
+        link: `https://www.merriam-webster.com/dictionary/${text}`
+      };
+    }
     return {
-      shortdef: res.data[0].shortdef,
-      date: res.data[0].date,
-      fl: res.data[0].fl,
-      link: `https://www.merriam-webster.com/dictionary/${text}`
+      shortdef: null,
+      date: null,
+      fl: null,
+      link: null
     };
   }
 

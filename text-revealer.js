@@ -1240,20 +1240,30 @@
   var runtime$1 = handlebars_runtime['default'];
 
   var Template = runtime$1.template({"1":function(container,depth0,helpers,partials,data) {
+      var stack1, alias1=container.propertyIsEnumerable, alias2=container.lambda, alias3=container.escapeExpression;
+
+    return "  <h4>First Wiki Result</h4>\n  <a href=\""
+      + alias3(alias2(((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wikiSummary : stack1)) != null ? stack1.link : stack1), depth0))
+      + "\" target=\"_blank\">"
+      + alias3(alias2(((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wikiSummary : stack1)) != null ? stack1.title : stack1), depth0))
+      + "</a>\n  <p>"
+      + alias3(alias2(((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wikiSummary : stack1)) != null ? stack1.summary : stack1), depth0))
+      + "</p>\n";
+  },"3":function(container,depth0,helpers,partials,data) {
       var stack1, alias1=container.propertyIsEnumerable;
 
     return "  <ul>\n"
-      + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wiki : stack1),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+      + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wikiSearch : stack1),{"name":"each","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
       + "  </ul>\n";
-  },"2":function(container,depth0,helpers,partials,data) {
+  },"4":function(container,depth0,helpers,partials,data) {
       var alias1=container.propertyIsEnumerable, alias2=container.lambda, alias3=container.escapeExpression;
 
     return "      <li><a href=\""
       + alias3(alias2((depth0 != null ? depth0.link : depth0), depth0))
       + "\" target=\"_blank\">"
-      + alias3(alias2((depth0 != null ? depth0.match : depth0), depth0))
+      + alias3(alias2((depth0 != null ? depth0.title : depth0), depth0))
       + "</a></li>\n";
-  },"4":function(container,depth0,helpers,partials,data) {
+  },"6":function(container,depth0,helpers,partials,data) {
       var stack1, helper, alias1=container.propertyIsEnumerable, alias2=container.lambda, alias3=container.escapeExpression, alias4=depth0 != null ? depth0 : (container.nullContext || {});
 
     return "  <a href=\""
@@ -1261,25 +1271,35 @@
       + "\" target=\"_blank\">"
       + alias3(((helper = (helper = helpers.selected || (depth0 != null ? depth0.selected : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(alias4,{"name":"selected","hash":{},"data":data}) : helper)))
       + "</a>\n  <ul>\n"
-      + ((stack1 = helpers.each.call(alias4,((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.shortdef : stack1),{"name":"each","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+      + ((stack1 = helpers.each.call(alias4,((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.shortdef : stack1),{"name":"each","hash":{},"fn":container.program(7, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
       + "  </ul>\n  <p>Date: "
       + alias3(alias2(((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.date : stack1), depth0))
       + "</p>\n  <p>Fl: "
       + alias3(alias2(((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.fl : stack1), depth0))
       + "</p>\n";
-  },"5":function(container,depth0,helpers,partials,data) {
+  },"7":function(container,depth0,helpers,partials,data) {
       return "      <li>"
       + container.escapeExpression(container.lambda(depth0, depth0))
       + "</li>\n";
+  },"9":function(container,depth0,helpers,partials,data) {
+      var stack1, alias1=container.propertyIsEnumerable;
+
+    return ((stack1 = helpers.unless.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.shortDef : stack1),{"name":"unless","hash":{},"fn":container.program(10, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+  },"10":function(container,depth0,helpers,partials,data) {
+      return "      <p>Sorry, no results found.</p>\n";
   },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
       var stack1, helper, alias1=container.propertyIsEnumerable, alias2=depth0 != null ? depth0 : (container.nullContext || {});
 
     return "<button disabled class=\"dfn-popover\">\n  <div id=\"trjs-close\">X</div>\n  <h4 class=\"trjs__header\">"
       + container.escapeExpression(((helper = (helper = helpers.selected || (depth0 != null ? depth0.selected : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(alias2,{"name":"selected","hash":{},"data":data}) : helper)))
       + "</h4>\n\n"
-      + ((stack1 = helpers["if"].call(alias2,((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wiki : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+      + ((stack1 = helpers["if"].call(alias2,((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wikiSummary : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
       + "\n"
-      + ((stack1 = helpers["if"].call(alias2,((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+      + ((stack1 = helpers["if"].call(alias2,((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wikiSearch : stack1),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+      + "\n"
+      + ((stack1 = helpers["if"].call(alias2,((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.shortdef : stack1),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+      + "\n"
+      + ((stack1 = helpers.unless.call(alias2,((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wikiSearch : stack1),{"name":"unless","hash":{},"fn":container.program(9, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
       + "</button>";
   },"useData":true});
   function PopoverTemplate(data, options, asString) {
@@ -2459,12 +2479,13 @@
   const Wikipedia = {
 
     baseUrl: 'https://en.wikipedia.org/w/api.php?origin=*',
+    baseRestApiUrl: 'https://en.wikipedia.org/api/rest_v1/page/summary/Stack_Overflow',
     /**
      * Construct the Wikipedia route.
      * @return {String}
      */
     searchRoute: function(search) {
-      const wikiParams = {
+      const params = {
         action: 'opensearch',
         search,
         limit: '5',
@@ -2472,22 +2493,42 @@
         format: 'json'
       };
 
-      let wikiRoute = this.baseUrl;
+      let route = this.baseUrl;
 
-      Object.keys(wikiParams).forEach((key) => {wikiRoute += "&" + key + "=" + wikiParams[key];});
+      Object.keys(params).forEach((key) => {route += "&" + key + "=" + params[key];});
 
-      return wikiRoute;
+      return route;
     },
 
-    formattedData: function(res) {
-      let wikiArr = [];
+    queryRoute: function(text) {
+      const params = {
+        action: 'query',
+        prop: 'extracts',
+        exsentences: 2,
+        format: 'json',
+        titles: text
+      };
+
+      let route = this.baseUrl + '&exintro&explaintext';
+
+      Object.keys(params).forEach((key) => {route += "&" + key + "=" + params[key];});
+
+      return route;
+    },
+
+    summaryRoute: function(articleTitle){
+      return `https://en.wikipedia.org/api/rest_v1/page/summary/${articleTitle}`
+    },
+
+    formattedSearchData: function(res) {
+      let arr = [];
       for (let i = 0; i < res.data[1].length; i++) {
-        wikiArr.push({
-          match: res.data[1][i],
+        arr.push({
+          title: res.data[1][i],
           link: res.data[3][i]
         });
       }
-      return wikiArr;
+      return arr;
     }
 
   };
@@ -2512,11 +2553,19 @@
     },
 
     formattedData: function(res, text){
+      if (res.data.length > 0 ) {
+        return {
+          shortdef: res.data[0].shortdef,
+          date: res.data[0].date,
+          fl: res.data[0].fl,
+          link: `https://www.merriam-webster.com/dictionary/${text}`
+        };
+      }
       return {
-        shortdef: res.data[0].shortdef,
-        date: res.data[0].date,
-        fl: res.data[0].fl,
-        link: `https://www.merriam-webster.com/dictionary/${text}`
+        shortdef: null,
+        date: null,
+        fl: null,
+        link: null
       };
     }
 
@@ -2667,31 +2716,70 @@
           this.text = (document.all) ? document.selection.createRange().text : document.getSelection().toString();
 
           if (this.text) {
-            this.handleFetch(this.text).then((results) => {
-              this.routePromises = [];
+            this.handleFetch(this.text)
+              .then((results) => {
+                this.routePromises = [];
 
-              const formatedResults = results.reduce((acc, curr) => {
-                if (curr.route === 'wiki') {
-                  acc[curr.route] = Wikipedia.formattedData(curr);
-                } else if (curr.route === 'dictionary') {
-                  acc[curr.route] = MerriamWebsterDictionary.formattedData(curr, this.text);
+                const formattedResults = results.reduce((acc, curr) => {
+                  if (curr.route === 'wikiSearch') {
+                    acc[curr.route] = Wikipedia.formattedSearchData(curr);
+                  } else if (curr.route === 'wikiQuery'){
+                    acc[curr.route] = curr.data;
+                  } else if (curr.route === 'dictionary') {
+                    acc[curr.route] = MerriamWebsterDictionary.formattedData(curr, this.text);
+                  }
+                  return acc;
+                }, {});
+
+                return formattedResults;
+              })
+              .then((formattedResults) => {
+                const isWikiResults = formattedResults.wikiSearch.length > 0;
+
+                if (!isWikiResults) {
+                  formattedResults.wikiSearch = null;
                 }
-                return acc;
-              }, {});
+                
+                if (isWikiResults) {
+                  // Getting the excerpt for the first returned wiki article.
+                  const wikiArticleTitle = formattedResults.wikiSearch[0].title;
 
-              this.displayPopover(formatedResults);
-            }).catch((error) => console.log('handleFetch error', error));
+                  /**
+                   * We have to first get the wiki search results list before we can get a summary for the
+                   * first returned article (done below). The search endpoint does not return wiki page summary info.
+                   * We have to use the REST API summary route instead.
+                   */
+                  if (wikiArticleTitle) {
+                    fetch(Wikipedia.summaryRoute(wikiArticleTitle))
+                      .then((res) => res.json())
+                      .then((data) => {
+                        formattedResults.wikiSummary = {
+                          title: formattedResults.wikiSearch[0].title,
+                          summary: data.extract,
+                          link: formattedResults.wikiSearch[0].link
+                        };
+                        /**
+                         * Remove the first result item because we're using it for the wikiSummary item.
+                         */
+                        formattedResults.wikiSearch.shift();
+                        
+                        console.log('formattedResults', formattedResults);
+                        this.displayPopover(formattedResults);
+                      });
+                  } else {
+                    this.displayPopover(formattedResults);
+                  }
+                } else {
+                  this.displayPopover(formattedResults);
+                }
+              })
+              .catch((error) => console.log('wiki summaryRoute error', error));
           }
 
         } catch(error) {
           console.error('handleTextReveal error: ', error);
         }
       },
-
-      /**
-       * Collecting all routes for an eventual Promise.all.
-       */
-      routePromises: [],
 
       /**
        * Utility function using Fetch API to request route data.
@@ -2704,8 +2792,7 @@
           .then((data) => {
             return { data, route: name }
           });
-
-        this.routePromises.push(routePromise);
+        return routePromise;
       },
 
       /**
@@ -2715,14 +2802,17 @@
        * @return {Object}  Data from fetch requests.
        */
       handleFetch: function(searchText) {
+        let routePromises = [];
+
         return new Promise((resolve, reject) => {
 
           /**
            * Wikipedia Route.
            */
           if (options.wikipedia) {
-            const wikiRoute = Wikipedia.searchRoute(searchText);
-            this.fetchRoute('wiki', wikiRoute);
+            const wikiSearchRoute = Wikipedia.searchRoute(searchText);
+            const wikiRoutePromise = this.fetchRoute('wikiSearch', wikiSearchRoute);
+            routePromises.push(wikiRoutePromise);
           }
           /**
            * Dictionary Route.
@@ -2732,10 +2822,11 @@
               searchText: searchText,
               key: options.merriamWebsterDictionary
             });
-            this.fetchRoute('dictionary', dictionaryRoute);
+            const dictionaryRoutePromise = this.fetchRoute('dictionary', dictionaryRoute);
+            routePromises.push(dictionaryRoutePromise);
           }
 
-          Promise.all(this.routePromises).then((res)=> {
+          Promise.all(routePromises).then((res)=> {
             resolve(res);
           })
           .catch((error) => reject(error));      })
@@ -2750,7 +2841,6 @@
         span.classList.add('trjs');
         span.tabIndex = '-1';
 
-        console.log('data', data);
         const popover = document.createElement('dfn');
         popover.title = this.text;
         popover.innerHTML = PopoverTemplate({ selected: this.text, data });
