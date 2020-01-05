@@ -19,6 +19,17 @@ const Wikipedia = {
     Object.keys(wikiParams).forEach((key) => {wikiRoute += "&" + key + "=" + wikiParams[key];});
 
     return wikiRoute;
+  },
+
+  formattedData: function(res) {
+    let wikiArr = [];
+    for (let i = 0; i < res.data[1].length; i++) {
+      wikiArr.push({
+        match: res.data[1][i],
+        link: res.data[3][i]
+      });
+    }
+    return wikiArr;
   }
 
 }

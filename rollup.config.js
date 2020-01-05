@@ -4,6 +4,8 @@ import rollupJson from 'rollup-plugin-json';
 import scss from 'rollup-plugin-scss';
 import banner from 'rollup-plugin-banner';
 import bannerInfo from './src/utils/banner.js';
+import commonjs from 'rollup-plugin-commonjs';
+import handlebars from 'rollup-plugin-handlebars-plus';
 
 module.exports = {
   input: 'src/main.js',
@@ -19,6 +21,8 @@ module.exports = {
     scss({
       output: 'text-revealer.css'
     }),
-    banner(bannerInfo)
+    banner(bannerInfo),
+    commonjs({ include: 'node_modules/**' }),
+    handlebars()
   ]
 };

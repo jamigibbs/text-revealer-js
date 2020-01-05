@@ -15,6 +15,15 @@ const MerriamWebsterDictionary = {
     Object.keys(params).forEach((key) => {dictionaryRoute += "&" + key + "=" + params[key];});
 
     return dictionaryRoute;
+  },
+
+  formattedData: function(res, text){
+    return {
+      shortdef: res.data[0].shortdef,
+      date: res.data[0].date,
+      fl: res.data[0].fl,
+      link: `https://www.merriam-webster.com/dictionary/${text}`
+    };
   }
 
 }

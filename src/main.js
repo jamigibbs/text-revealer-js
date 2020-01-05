@@ -1,9 +1,8 @@
 import './scss/_global.scss';
-
+import PopoverTemplate from './views/popover.hbs';
 import DOMPurify from 'dompurify';
 import Wikipedia from './routes/wikipedia';
 import MerriamWebsterDictionary from './routes/merriam-webster-dictionary';
-import PopoverContent from './popover-content/popover-content';
 
 const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','a','pre'];
 const DEFAULT_DISABLED_TAGS = ['input', 'textarea','code'];
@@ -152,8 +151,13 @@ function TextRevealer(options = {}) {
         if (this.text) {
           this.handleFetch(this.text).then((results) => {
             this.routePromises = [];
+
             const formatedResults = results.reduce((acc, curr) => {
-              acc[curr.route] = curr.data;
+              if (curr.route === 'wiki') {
+                acc[curr.route] = Wikipedia.formattedData(curr);
+              } else if (curr.route === 'dictionary') {
+                acc[curr.route] = MerriamWebsterDictionary.formattedData(curr, this.text);
+              }
               return acc;
             }, {})
 
@@ -162,7 +166,7 @@ function TextRevealer(options = {}) {
         }
 
       } catch(error) {
-        console.log('selection error: ', error);
+        console.error('handleTextReveal error: ', error);
       }
     },
 
@@ -230,15 +234,10 @@ function TextRevealer(options = {}) {
       span.classList.add('trjs');
       span.tabIndex = '-1';
 
+      console.log('data', data);
       const popover = document.createElement('dfn');
       popover.title = this.text;
-      
-      const cleanContent = DOMPurify.sanitize(new PopoverContent({ 
-        selected: this.text, 
-        data 
-      }).html());
-
-      popover.innerHTML = cleanContent;
+      popover.innerHTML = PopoverTemplate({ selected: this.text, data });
 
       if (window.getSelection) {
         const sel = window.getSelection();

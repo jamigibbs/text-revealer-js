@@ -1,0 +1,23 @@
+<button disabled class="dfn-popover">
+  <div id="trjs-close">X</div>
+  <h4 class="trjs__header">{{ selected }}</h4>
+
+  {{#if data.wiki}}
+  <ul>
+    {{#each data.wiki}}
+      <li><a href="{{this.link}}" target="_blank">{{this.match}}</a></li>
+    {{/each}}
+  </ul>
+  {{/if}}
+
+  {{#if data.dictionary}}
+  <a href="{{data.dictionary.link}}" target="_blank">{{selected}}</a>
+  <ul>
+    {{#each data.dictionary.shortdef}}
+      <li>{{this}}</li>
+    {{/each}}
+  </ul>
+  <p>Date: {{data.dictionary.date}}</p>
+  <p>Fl: {{data.dictionary.fl}}</p>
+  {{/if}}
+</button>
