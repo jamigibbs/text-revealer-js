@@ -2494,9 +2494,7 @@
       };
 
       let route = this.baseUrl;
-
       Object.keys(params).forEach((key) => {route += "&" + key + "=" + params[key];});
-
       return route;
     },
 
@@ -2546,9 +2544,7 @@
       };
 
       let dictionaryRoute = `${this.baseUrl}/${options.searchText}?`;
-
       Object.keys(params).forEach((key) => {dictionaryRoute += "&" + key + "=" + params[key];});
-
       return dictionaryRoute;
     },
 
@@ -2746,8 +2742,9 @@
 
                   /**
                    * We have to first get the wiki search results list before we can get a summary for the
-                   * first returned article (done below). The search endpoint does not return wiki page summary info.
-                   * We have to use the REST API summary route instead.
+                   * first returned article (done below) because we don't know the exact result title yet.
+                   * The search endpoint does not return wiki page summary info. We have to use the 
+                   * wiki REST API summary route instead.
                    */
                   if (wikiArticleTitle) {
                     fetch(Wikipedia.summaryRoute(wikiArticleTitle))
@@ -2762,8 +2759,6 @@
                          * Remove the first result item because we're using it for the wikiSummary item.
                          */
                         formattedResults.wikiSearch.shift();
-                        
-                        console.log('formattedResults', formattedResults);
                         this.displayPopover(formattedResults);
                       });
                   } else {

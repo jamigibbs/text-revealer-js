@@ -11,9 +11,7 @@ const MerriamWebsterDictionary = {
     };
 
     let dictionaryRoute = `${this.baseUrl}/${options.searchText}?`;
-
     Object.keys(params).forEach((key) => {dictionaryRoute += "&" + key + "=" + params[key];});
-
     return dictionaryRoute;
   },
 

@@ -179,8 +179,9 @@ function TextRevealer(options = {}) {
 
                 /**
                  * We have to first get the wiki search results list before we can get a summary for the
-                 * first returned article (done below). The search endpoint does not return wiki page summary info.
-                 * We have to use the REST API summary route instead.
+                 * first returned article (done below) because we don't know the exact result title yet.
+                 * The search endpoint does not return wiki page summary info. We have to use the 
+                 * wiki REST API summary route instead.
                  */
                 if (wikiArticleTitle) {
                   fetch(Wikipedia.summaryRoute(wikiArticleTitle))
@@ -195,8 +196,6 @@ function TextRevealer(options = {}) {
                        * Remove the first result item because we're using it for the wikiSummary item.
                        */
                       formattedResults.wikiSearch.shift();
-                      
-                      console.log('formattedResults', formattedResults)
                       this.displayPopover(formattedResults);
                     });
                 } else {

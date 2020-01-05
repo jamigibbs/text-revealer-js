@@ -16,9 +16,7 @@ const Wikipedia = {
     };
 
     let route = this.baseUrl;
-
     Object.keys(params).forEach((key) => {route += "&" + key + "=" + params[key];});
-
     return route;
   },
 
