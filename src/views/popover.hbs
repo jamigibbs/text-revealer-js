@@ -1,35 +1,15 @@
 <button disabled class="dfn-popover">
+
   <div id="trjs-close">X</div>
+
   <h4 class="trjs__header">{{ selected }}</h4>
 
-  {{#if data.wikiSummary}}
-  <h4>First Wiki Result</h4>
-  <a href="{{data.wikiSummary.link}}" target="_blank">{{data.wikiSummary.title}}</a>
-  <p>{{data.wikiSummary.summary}}</p>
-  {{/if}}
+  {{>'/_wikiSummary'}}
 
-  {{#if data.wikiSearch}}
-  <ul>
-    {{#each data.wikiSearch}}
-      <li><a href="{{this.link}}" target="_blank">{{this.title}}</a></li>
-    {{/each}}
-  </ul>
-  {{/if}}
+  {{>'/_wikiSearch'}}
 
-  {{#if data.dictionary.shortdef}}
-  <a href="{{data.dictionary.link}}" target="_blank">{{selected}}</a>
-  <ul>
-    {{#each data.dictionary.shortdef}}
-      <li>{{this}}</li>
-    {{/each}}
-  </ul>
-  <p>Date: {{data.dictionary.date}}</p>
-  <p>Fl: {{data.dictionary.fl}}</p>
-  {{/if}}
+  {{>'/_dictionary'}}
 
-  {{#unless data.wikiSearch}}
-    {{#unless data.dictionary.shortDef}}
-      <p>Sorry, no results found.</p>
-    {{/unless}}
-  {{/unless}}
+  {{>'/_noresults'}}
+
 </button>

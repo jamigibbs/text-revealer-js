@@ -1,6 +1,6 @@
 import './scss/_global.scss';
 import PopoverTemplate from './views/popover.hbs';
-import DOMPurify from 'dompurify';
+import ToggleTemplate from './views/toggle.hbs';
 import Wikipedia from './routes/wikipedia';
 import MerriamWebsterDictionary from './routes/merriam-webster-dictionary';
 
@@ -77,15 +77,7 @@ function TextRevealer(options = {}) {
       const newToggleEl = document.createElement('div');
 
       newToggleEl.classList.add('trjs-toggle-container')
-
-      const cleanContent = DOMPurify.sanitize(`
-      <div class="trjs-toggle-inner"><label class="switch">
-        <input type="checkbox">
-        <span class="slider round"></span>
-      </label></div>`)
-
-      newToggleEl.innerHTML = cleanContent;
-      
+      newToggleEl.innerHTML = ToggleTemplate();
       body.appendChild(newToggleEl);
 
       /**

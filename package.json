@@ -59,6 +59,7 @@
     "rollup-plugin-node-builtins": "^2.1.2",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-postcss": "^2.0.3",
+    "rollup-plugin-root-import": "^0.2.4",
     "rollup-plugin-scss": "^2.1.0",
     "sass": "^1.24.0"
   }

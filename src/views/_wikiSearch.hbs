@@ -1,0 +1,7 @@
+  {{#if data.wikiSearch}}
+  <ul>
+    {{#each data.wikiSearch}}
+      <li><a href="{{this.link}}" target="_blank">{{this.title}}</a></li>
+    {{/each}}
+  </ul>
+  {{/if}}

@@ -1,0 +1,10 @@
+  {{#if data.dictionary.shortdef}}
+  <a href="{{data.dictionary.link}}" target="_blank">{{selected}}</a>
+  <ul>
+    {{#each data.dictionary.shortdef}}
+      <li>{{this}}</li>
+    {{/each}}
+  </ul>
+  <p>Date: {{data.dictionary.date}}</p>
+  <p>Fl: {{data.dictionary.fl}}</p>
+  {{/if}}
