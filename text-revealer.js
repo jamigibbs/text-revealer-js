@@ -1395,7 +1395,7 @@
 
           if (this.text) {
             this.handleFetch(this.text).then((results) => {
-
+              this.routePromises = [];
               const formatedResults = results.reduce((acc, curr) => {
                 acc[curr.route] = curr.data;
                 return acc;
@@ -1411,6 +1411,26 @@
       },
 
       /**
+       * Collecting all routes for an eventual Promise.all.
+       */
+      routePromises: [],
+
+      /**
+       * Utility function using Fetch API to request route data.
+       * @param {String} name 
+       * @param {String} route 
+       */
+      fetchRoute: function(name, route) {
+        const routePromise = fetch(route)
+          .then((res) => res.json())
+          .then((data) => {
+            return { data, route: name }
+          });
+
+        this.routePromises.push(routePromise);
+      },
+
+      /**
        * Fetching data from various APIs with the selected string. Combining the routes into
        * a single fetch request.
        * @param {String}   searchText
@@ -1418,34 +1438,26 @@
        */
       handleFetch: function(searchText) {
         return new Promise((resolve, reject) => {
-          const promises = [];
 
+          /**
+           * Wikipedia Route.
+           */
           if (options.wikipedia) {
             const wikiRoute = Wikipedia.searchRoute(searchText);
-            const wikiPromise = fetch(wikiRoute)
-              .then(res => res.json())
-              .then(data => {
-                return { data, route: 'wiki' }
-              });
-
-            promises.push(wikiPromise);
+            this.fetchRoute('wiki', wikiRoute);
           }
+          /**
+           * Dictionary Route.
+           */
           if (options.merriamWebsterDictionary) {
             const dictionaryRoute = MerriamWebsterDictionary.searchRoute({
               searchText: searchText,
               key: options.merriamWebsterDictionary
             });
-
-            const dictionaryPromise = fetch(dictionaryRoute)
-            .then(res => res.json())
-            .then(data => {
-              return { data, route: 'dictionary' }
-            });
-
-            promises.push(dictionaryPromise);
+            this.fetchRoute('dictionary', dictionaryRoute);
           }
 
-          Promise.all(promises).then((res)=> {
+          Promise.all(this.routePromises).then((res)=> {
             resolve(res);
           })
           .catch((error) => reject(error));      })
