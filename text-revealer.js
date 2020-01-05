@@ -1180,57 +1180,51 @@
   var purify = createDOMPurify();
   //# sourceMappingURL=purify.es.js.map
 
-  function Wikipedia() {
+  const Wikipedia = {
 
-    const baseUrl = 'https://en.wikipedia.org/w/api.php?origin=*';
+    baseUrl: 'https://en.wikipedia.org/w/api.php?origin=*',
+    /**
+     * Construct the Wikipedia route.
+     * @return {String}
+     */
+    searchRoute: function(search) {
+      const wikiParams = {
+        action: 'opensearch',
+        search,
+        limit: '5',
+        namespace: '0',
+        format: 'json'
+      };
 
-    return {
-      /**
-       * Construct the Wikipedia route.
-       * @return {String}
-       */
-      searchRoute: (search) => {
-        const wikiParams = {
-          action: 'opensearch',
-          search,
-          limit: '5',
-          namespace: '0',
-          format: 'json'
-        };
+      let wikiRoute = this.baseUrl;
 
-        let wikiRoute = baseUrl;
+      Object.keys(wikiParams).forEach((key) => {wikiRoute += "&" + key + "=" + wikiParams[key];});
 
-        Object.keys(wikiParams).forEach((key) => {wikiRoute += "&" + key + "=" + wikiParams[key];});
-
-        return wikiRoute;
-      }
+      return wikiRoute;
     }
 
-  }
+  };
 
-  function MerriamWebsterDictionary() {
+  const MerriamWebsterDictionary = {
 
-    const baseUrl = 'https://www.dictionaryapi.com/api/v3/references/collegiate/json/';
+    baseUrl: 'https://www.dictionaryapi.com/api/v3/references/collegiate/json/',
+    /**
+     * Construct the Merriam-Webster Dictionary route.
+     * @return {String}
+     */
+    searchRoute: function (options = {}) {
+      const params = {
+        key: options.key
+      };
 
-    return {
-      /**
-       * Construct the Merriam-Webster Dictionary route.
-       * @return {String}
-       */
-      searchRoute: (options = {}) => {
-        const params = {
-          key: options.key
-        };
+      let dictionaryRoute = `${this.baseUrl}/${options.searchText}?`;
 
-        let dictionaryRoute = `${baseUrl}/${options.searchText}?`;
+      Object.keys(params).forEach((key) => {dictionaryRoute += "&" + key + "=" + params[key];});
 
-        Object.keys(params).forEach((key) => {dictionaryRoute += "&" + key + "=" + params[key];});
-
-        return dictionaryRoute;
-      }
+      return dictionaryRoute;
     }
 
-  }
+  };
 
   function PopoverContent(content = {}) {
 
@@ -1418,16 +1412,16 @@
 
       /**
        * Fetching data from various APIs with the selected string. Combining the routes into
-       * a single Axios request.
+       * a single fetch request.
        * @param {String}   searchText
-       * @return {Object}  Data from axios get requests.
+       * @return {Object}  Data from fetch requests.
        */
       handleFetch: function(searchText) {
         return new Promise((resolve, reject) => {
           const promises = [];
 
           if (options.wikipedia) {
-            const wikiRoute = Wikipedia().searchRoute(searchText);
+            const wikiRoute = Wikipedia.searchRoute(searchText);
             const wikiPromise = fetch(wikiRoute)
               .then(res => res.json())
               .then(data => {
@@ -1437,7 +1431,7 @@
             promises.push(wikiPromise);
           }
           if (options.merriamWebsterDictionary) {
-            const dictionaryRoute = MerriamWebsterDictionary().searchRoute({
+            const dictionaryRoute = MerriamWebsterDictionary.searchRoute({
               searchText: searchText,
               key: options.merriamWebsterDictionary
             });
@@ -1461,7 +1455,7 @@
        * Construct the popover element and add it to the DOM.
        * @param {Object} - Results of the Wikipedia, Dictionary, etc. call.
        */
-      displayPopover: function(results){
+      displayPopover: function(data){
         const span = document.createElement("span");
         span.classList.add('trjs');
         span.tabIndex = '-1';
@@ -1471,7 +1465,7 @@
         
         const cleanContent = purify.sanitize(new PopoverContent({ 
           selected: this.text, 
-          results 
+          data 
         }).html());
 
         popover.innerHTML = cleanContent;

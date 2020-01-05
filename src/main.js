@@ -168,16 +168,16 @@ function TextRevealer(options = {}) {
 
     /**
      * Fetching data from various APIs with the selected string. Combining the routes into
-     * a single Axios request.
+     * a single fetch request.
      * @param {String}   searchText
-     * @return {Object}  Data from axios get requests.
+     * @return {Object}  Data from fetch requests.
      */
     handleFetch: function(searchText) {
       return new Promise((resolve, reject) => {
         const promises = [];
 
         if (options.wikipedia) {
-          const wikiRoute = Wikipedia().searchRoute(searchText);
+          const wikiRoute = Wikipedia.searchRoute(searchText);
           const wikiPromise = fetch(wikiRoute)
             .then(res => res.json())
             .then(data => {
@@ -188,7 +188,7 @@ function TextRevealer(options = {}) {
         };
 
         if (options.merriamWebsterDictionary) {
-          const dictionaryRoute = MerriamWebsterDictionary().searchRoute({
+          const dictionaryRoute = MerriamWebsterDictionary.searchRoute({
             searchText: searchText,
             key: options.merriamWebsterDictionary
           });
@@ -213,7 +213,7 @@ function TextRevealer(options = {}) {
      * Construct the popover element and add it to the DOM.
      * @param {Object} - Results of the Wikipedia, Dictionary, etc. call.
      */
-    displayPopover: function(results){
+    displayPopover: function(data){
       const span = document.createElement("span");
       span.classList.add('trjs');
       span.tabIndex = '-1';
@@ -223,7 +223,7 @@ function TextRevealer(options = {}) {
       
       const cleanContent = DOMPurify.sanitize(new PopoverContent({ 
         selected: this.text, 
-        results 
+        data 
       }).html());
 
       popover.innerHTML = cleanContent;

@@ -1,27 +1,24 @@
-function Wikipedia() {
+const Wikipedia = {
 
-  const baseUrl = 'https://en.wikipedia.org/w/api.php?origin=*';
+  baseUrl: 'https://en.wikipedia.org/w/api.php?origin=*',
+  /**
+   * Construct the Wikipedia route.
+   * @return {String}
+   */
+  searchRoute: function(search) {
+    const wikiParams = {
+      action: 'opensearch',
+      search,
+      limit: '5',
+      namespace: '0',
+      format: 'json'
+    };
 
-  return {
-    /**
-     * Construct the Wikipedia route.
-     * @return {String}
-     */
-    searchRoute: (search) => {
-      const wikiParams = {
-        action: 'opensearch',
-        search,
-        limit: '5',
-        namespace: '0',
-        format: 'json'
-      };
+    let wikiRoute = this.baseUrl;
 
-      let wikiRoute = baseUrl;
+    Object.keys(wikiParams).forEach((key) => {wikiRoute += "&" + key + "=" + wikiParams[key];});
 
-      Object.keys(wikiParams).forEach((key) => {wikiRoute += "&" + key + "=" + wikiParams[key];});
-
-      return wikiRoute;
-    }
+    return wikiRoute;
   }
 
 }
