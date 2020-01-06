@@ -7,16 +7,16 @@ import bannerInfo from './src/utils/banner.js';
 import commonjs from 'rollup-plugin-commonjs';
 import handlebars from 'rollup-plugin-handlebars-plus';
 import rootImport from 'rollup-plugin-root-import';
+import { terser } from "rollup-plugin-terser";
 
 var partialRoots = [`${__dirname}/src/views`];
 
 module.exports = {
   input: 'src/main.js',
-  output: {
-    file: 'text-revealer.js',
-    format: 'umd', 
-    name: 'TextRevealer'
-  },
+  output: [
+    {file: 'text-revealer.js', format: 'umd',  name: 'TextRevealer'},
+    {file: 'text-revealer.min.js', format: 'umd',  name: 'TextRevealer' }
+  ],
   plugins: [
     builtins(),
     rollupNodeResolve(),
@@ -31,6 +31,10 @@ module.exports = {
     }),
     handlebars({
       partialRoot: partialRoots
+    }),
+    terser({
+      include: [/^.+\.min\.js$/, '*umd*'],
+      keep_fnames: true
     })
   ]
 };

@@ -17,7 +17,7 @@
     "build": "npm run clean:dist && rollup --watch -c rollup.config.js",
     "build:docs": "npm run clean:docs && jsdoc -c .jsdoc.json",
     "clean": "npm run clean:dist && npm run clean:docs",
-    "clean:dist": "rm -rf text-revealer.js text-revealer.css",
+    "clean:dist": "rm -rf text-revealer.js text-revealer.css text-revealer.min.js",
     "clean:docs": "rm -rf docs",
     "ci": "npm run clean && npm run lint && npm run test && npm run build && npm run build:docs",
     "lint": "eslint integration-tests/**/*.js src/**/*.js",
@@ -61,6 +61,8 @@
     "rollup-plugin-postcss": "^2.0.3",
     "rollup-plugin-root-import": "^0.2.4",
     "rollup-plugin-scss": "^2.1.0",
-    "sass": "^1.24.0"
+    "rollup-plugin-terser": "^5.1.3",
+    "sass": "^1.24.0",
+    "uglify-js": "^3.5.12"
   }
 }
