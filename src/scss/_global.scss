@@ -1,57 +1,92 @@
+$font-open-sans: "Open Sans";
+$font-crimson-text: "Crimson Text";
+
+$color-highlight: #fff9c4;
+$color-dark: #333333;
+$color-white: #ffffff;
+$color-black: #000000;
+$color-blue: #2196F3;
+$color-grey: #cccccc;
+
+$z-index-9999: 9999;
+
 .trjs {
-  z-index: 99999;
+  background-color: $color-highlight;
   user-select: none;
   -moz-user-select: none;
+  z-index: $z-index-9999;
   dfn {
-    position: relative;
     display: inline-block;
-    /* cursor: help; */
+    position: relative;
     &:before {
       content: attr(title);
       font-style: normal;
     }
     > .dfn-popover {
-      /* display: none; */
-      display: block;
-      position: absolute; 
-      // top: calc(1em + 5px);
-      width: 25em;
-      min-height: 15em;
-      background: #ffffff;
-      padding: .5em;
+      background-color: $color-white;
       border: none;
       -webkit-box-shadow: 0px 0px 9px 1px rgba(204,204,204,1);
       -moz-box-shadow: 0px 0px 9px 1px rgba(204,204,204,1);
       box-shadow: 0px 0px 9px 1px rgba(204,204,204,1);
+      display: block;
+      min-height: 15em;
+      padding: 2.5em;
+      position: absolute; 
+      text-align: left;
+      width: 30em;
     }
   }
   .dfn-popover {
-    z-index: 9999;
+    color: rgba(0,0,0,0.87);
+    font-family: $font-open-sans;
+    font-style: normal;
+    z-index: $z-index-9999;
   }
   &__header {
-    font-size: 24px;
-    color: #333333;
-    text-align: center;
-    margin: 20px 0;
+    color: $color-dark;
+    font-family: $font-crimson-text;
+    font-size: 45px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 48px;
+    margin: 0 0 20px 0;
+  }
+  &__wiki-summary-header {
+    font-style: normal;
+    font-weight: normal;
   }
 }
 
 #trjs-close {
-  text-align: right;
-  &:hover {
-    cursor: pointer;
-    color: black;
+  height: 2rem;
+  position: absolute;
+  right: 2rem;
+  top: 1rem;
+  width: 1rem;
+  .icon {
+    display: inline-block;
+    fill: $color-grey;
+    height: 2rem;
+    stroke-width: 0;
+    stroke: $color-grey;
+    transition: fill .4s ease;
+    width: 2rem;
+    &:hover {
+      cursor: pointer;
+      fill: $color-black;
+      stroke: $color-grey;
+    }
   }
 }
 
 .trjs-toggle-container {
-  position: absolute;
   display: block!important;
+  position: absolute;
   .trjs-toggle-inner {
-    position: fixed;
     bottom: 60px;
     left: 50px;
-    z-index: 999;
+    position: fixed;
+    z-index: $z-index-9999;
   }
   .switch {
     position: relative;
@@ -63,10 +98,10 @@
       width: 0;
       height: 0;
       &:checked + .slider {
-        background-color: #2196F3;
+        background-color: $color-blue;
       }
       &:focus + .slider {
-        box-shadow: 0 0 1px #2196F3;
+        box-shadow: 0 0 1px $color-blue;
       }
       &:checked + .slider:before {
         -webkit-transform: translateX(26px);
@@ -76,18 +111,18 @@
     }
   }
   .slider {
-    background-color: #ccc;
+    background-color: $color-grey;
     bottom: 0;
-    position: absolute;
     cursor: pointer;
     height: 100%;
-    width: 100%;
-    top: 0;
     left: 0;
     right: 0;
     padding: 0;
-    -webkit-transition: .4s;
+    position: absolute;
+    top: 0;
     transition: .4s;
+    -webkit-transition: .4s;
+    width: 100%;
     &:before {
       position: absolute;
       content: "";
@@ -95,7 +130,7 @@
       width: 26px;
       left: 4px;
       bottom: 4px;
-      background-color: white;
+      background-color: $color-white;
       -webkit-transition: .4s;
       transition: .4s;
     }
