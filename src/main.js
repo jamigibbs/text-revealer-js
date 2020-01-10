@@ -292,6 +292,12 @@ function TextRevealer(options = {}) {
             span.scrollIntoView({ behavior: "smooth" });
           }
 
+          /**
+           * Set the position of the popover so that it doesn't overflow the
+           * left or right screen boundries.
+           */
+          this.positionPopover();
+
           document.getElementById('trjs-close').addEventListener('click', this.closePopover.bind(this));
           
         }
@@ -307,6 +313,46 @@ function TextRevealer(options = {}) {
       
       this.text = null;
       this.targetTag = null;
+    },
+
+    /**
+     * Calculate the position of the provided element.
+     * @param {Object} element 
+     */
+    getPosition: function(element) {
+      let xPosition = 0;
+      let yPosition = 0;
+
+      while (element) {
+        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+        element = element.offsetParent;
+      }
+
+      return {
+        x: xPosition,
+        y: yPosition
+      };
+    },
+
+    /**
+     * Align the popover to the left or right of the selected text so that it doesn't
+     * overflow the window width.
+     */
+    positionPopover: function() {
+      const popover = document.querySelector('.dfn-popover');
+      // width of the window.
+      const ww = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+      // position of the hovered element relative to window.
+      const pos = this.getPosition(popover); 
+
+      // element is on right side of viewport.
+      if (pos.x > (ww / 2)) {
+        popover.style.right = '0';
+      // element is on left side of viewport.
+      } else {
+        popover.style.left = '0';
+      }
     }
 
   }
