@@ -33,15 +33,22 @@ function TextRevealer(options = {}) {
   return {
     init: function() {
 
+      /**
+       * Bail if user is on a mobile device. This script does not support touch devices.
+       */
+      const isMobile = window.matchMedia("only screen and (max-width: 1024px)").matches;
+      if (isMobile) return;
+
+      /**
+       * Bail if the script is getting loaded in an iframe.
+       */
+      if (window.location !== window.parent.location) return;
+
       window.addEventListener('DOMContentLoaded', () => {
         this.addWebFont();
       });
 
       window.addEventListener('load', () => {
-        /**
-         * Bail if the script is getting loaded in an iframe.
-         */
-        if (window.location !== window.parent.location) return;
 
         WebFont.load({
            google: {
