@@ -88,7 +88,7 @@ function TextRevealer(options = {}) {
      * 
      * @ref https://github.com/typekit/webfontloader
      */
-    addWebFont: function(families = []) {
+    addWebFont: function() {
      const wf = document.createElement('script'), s = document.scripts[0];
      wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
      wf.async = true;
