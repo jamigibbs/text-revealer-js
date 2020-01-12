@@ -7,6 +7,9 @@ $color-white: #ffffff;
 $color-black: #000000;
 $color-blue: #2196F3;
 $color-grey: #cccccc;
+$color-grey-light: #efefef;
+$color-red: #f74547;
+$color-red-light: #ff8788;
 
 $z-index-9999: 9999;
 
@@ -15,6 +18,22 @@ $z-index-9999: 9999;
   user-select: none;
   -moz-user-select: none;
   z-index: $z-index-9999;
+  a {
+    color: $color-red;
+    text-decoration: none;
+    transition: color .4s ease;
+    &:hover {
+      color: $color-red-light;
+    }
+  }
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 2px solid $color-grey-light;
+    margin: 1em 0;
+    padding: 0;
+  }
   dfn {
     display: inline-block;
     position: relative;
@@ -25,9 +44,10 @@ $z-index-9999: 9999;
     > .dfn-popover {
       background-color: $color-white;
       border: none;
-      -webkit-box-shadow: 0px 0px 9px 1px rgba(204,204,204,1);
-      -moz-box-shadow: 0px 0px 9px 1px rgba(204,204,204,1);
-      box-shadow: 0px 0px 9px 1px rgba(204,204,204,1);
+      border-radius: 7px;
+      -webkit-box-shadow: 0px 0px 5px 1px rgba(204,204,204,1);
+      -moz-box-shadow: 0px 0px 5px 1px rgba(204,204,204,1);
+      box-shadow: 0px 0px 5px 1px rgba(204,204,204,1);
       display: block;
       min-height: 15em;
       padding: 2.5em;
@@ -52,8 +72,37 @@ $z-index-9999: 9999;
     margin: 0 0 20px 0;
   }
   &__wiki-summary-header {
+    animation-delay: 0.3s;
     font-style: normal;
     font-weight: normal;
+  }
+  .wiki-summary {
+    animation-delay: 0.3s;
+    &__link {
+      white-space: nowrap;
+    }
+  }
+  .wiki-search {
+    &__header {
+      font-size: 14px;
+      font-weight: bold;
+    }
+  }
+  .dictionary-result {
+    animation-delay: 0.6s;
+  }
+
+  .fadeInAnimated {
+    top: 0;
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0}
+    to {opacity: 1}
   }
 }
 

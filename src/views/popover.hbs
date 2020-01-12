@@ -7,14 +7,18 @@
     </svg>
   </div>
   
+  <h4 class="trjs__header fadeInAnimated">{{ selected }}</h4>
 
-  <h4 class="trjs__header">{{ selected }}</h4>
+  <div class="wiki-summary fadeInAnimated">
+    {{>'/_wikiSummary'}}
 
-  {{>'/_wikiSummary'}}
+    {{>'/_wikiSearch'}}
+  </div>
 
-  {{>'/_wikiSearch'}}
-
-  {{>'/_dictionary'}}
+  <div class="dictionary-result fadeInAnimated">
+    <hr>
+    {{>'/_dictionary'}}
+  </div>
 
   {{>'/_noresults'}}
 

@@ -3,6 +3,19 @@
   user-select: none;
   -moz-user-select: none;
   z-index: 9999; }
+  .trjs a {
+    color: #f74547;
+    text-decoration: none;
+    transition: color .4s ease; }
+    .trjs a:hover {
+      color: #ff8788; }
+  .trjs hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 2px solid #efefef;
+    margin: 1em 0;
+    padding: 0; }
   .trjs dfn {
     display: inline-block;
     position: relative; }
@@ -12,9 +25,10 @@
     .trjs dfn > .dfn-popover {
       background-color: #ffffff;
       border: none;
-      -webkit-box-shadow: 0px 0px 9px 1px #cccccc;
-      -moz-box-shadow: 0px 0px 9px 1px #cccccc;
-      box-shadow: 0px 0px 9px 1px #cccccc;
+      border-radius: 7px;
+      -webkit-box-shadow: 0px 0px 5px 1px #cccccc;
+      -moz-box-shadow: 0px 0px 5px 1px #cccccc;
+      box-shadow: 0px 0px 5px 1px #cccccc;
       display: block;
       min-height: 15em;
       padding: 2.5em;
@@ -35,8 +49,29 @@
     line-height: 48px;
     margin: 0 0 20px 0; }
   .trjs__wiki-summary-header {
+    animation-delay: 0.3s;
     font-style: normal;
     font-weight: normal; }
+  .trjs .wiki-summary {
+    animation-delay: 0.3s; }
+    .trjs .wiki-summary__link {
+      white-space: nowrap; }
+  .trjs .wiki-search__header {
+    font-size: 14px;
+    font-weight: bold; }
+  .trjs .dictionary-result {
+    animation-delay: 0.6s; }
+  .trjs .fadeInAnimated {
+    opacity: 0;
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    animation-fill-mode: forwards; }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0; }
+  to {
+    opacity: 1; } }
 
 #trjs-close {
   height: 2rem;
