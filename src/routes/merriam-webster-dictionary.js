@@ -19,12 +19,15 @@ const MerriamWebsterDictionary = {
     if (res.data.length > 0 ) {
       const firstResult = res.data[0];
       const middleDot = String.fromCharCode(0x00B7);
-      const cons = firstResult.hwi.hw.replace(/\*/g, middleDot);
+      const hwi = firstResult.hwi;
+      const hw = hwi ? hwi.hw : null;
+      const cons = hw ? hw.replace(/\*/g, middleDot) : '';
+      const pronunciation = firstResult.hwi.prs ? firstResult.hwi.prs[0].mw : null;
       return {
         date: firstResult.date,
         fl: firstResult.fl,
         link: `https://www.merriam-webster.com/dictionary/${text}`,
-        pronunciation: firstResult.hwi.prs[0].mw,
+        pronunciation,
         cons,
         shortdef: firstResult.shortdef
       };

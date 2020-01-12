@@ -29,6 +29,7 @@ function TextRevealer(options = {}) {
   this.text = null;
   this.targetTag = null;
   this.isActive = false;
+  this.searchTextCount = 0;
 
   return {
     init: function() {
@@ -256,6 +257,7 @@ function TextRevealer(options = {}) {
      * @return {Object}  Data from fetch requests.
      */
     handleFetch: function(searchText) {
+      this.searchTextCount = searchText.split(' ').length;
       let routePromises = [];
 
       return new Promise((resolve, reject) => {
@@ -272,7 +274,7 @@ function TextRevealer(options = {}) {
         /**
          * Dictionary Route.
          */
-        if (options.merriamWebsterDictionary) {
+        if (options.merriamWebsterDictionary && this.searchTextCount === 1) {
           const dictionaryRoute = MerriamWebsterDictionary.searchRoute({
             searchText: searchText,
             key: options.merriamWebsterDictionary
