@@ -34,7 +34,7 @@ function TextRevealer(options = {}) {
     init: function() {
 
       window.addEventListener('DOMContentLoaded', () => {
-        this.addWebFont(['Open+Sans:400,300,700', 'Crimson+Text:400,700'])
+        this.addWebFont();
       });
 
       window.addEventListener('load', () => {
@@ -42,6 +42,12 @@ function TextRevealer(options = {}) {
          * Bail if the script is getting loaded in an iframe.
          */
         if (window.location !== window.parent.location) return;
+
+        WebFont.load({
+           google: {
+             families: ['Open+Sans:400,300,700', 'Crimson+Text:400,700']
+           }
+         });
 
         /**
          * Adding the on/off toggle to the end of the body tag.
@@ -78,22 +84,15 @@ function TextRevealer(options = {}) {
     },
 
     /**
-     * Loading Google fonts with Web Font Loader. 
+     * Adding Google fonts with Web Font Loader script to the page.
      * 
      * @ref https://github.com/typekit/webfontloader
-     * @param {Array} families 
      */
     addWebFont: function(families = []) {
      const wf = document.createElement('script'), s = document.scripts[0];
      wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
      wf.async = true;
      s.parentNode.insertBefore(wf, s);
-
-     WebFont.load({
-        google: {
-          families
-        }
-      });
     },
 
     addToggle: function() {
