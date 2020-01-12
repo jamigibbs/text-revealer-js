@@ -32,6 +32,11 @@ function TextRevealer(options = {}) {
 
   return {
     init: function() {
+
+      window.addEventListener('DOMContentLoaded', () => {
+        this.addWebFont(['Open+Sans:400,300,700', 'Crimson+Text:400,700'])
+      });
+
       window.addEventListener('load', () => {
         /**
          * Bail if the script is getting loaded in an iframe.
@@ -70,6 +75,25 @@ function TextRevealer(options = {}) {
         document.onmouseup = this.debounced(options.delay, this.handleTextReveal.bind(this));
         if (!document.all) document.captureEvents(Event.MOUSEUP);
       })
+    },
+
+    /**
+     * Loading Google fonts with Web Font Loader. 
+     * 
+     * @ref https://github.com/typekit/webfontloader
+     * @param {Array} families 
+     */
+    addWebFont: function(families = []) {
+     const wf = document.createElement('script'), s = document.scripts[0];
+     wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
+     wf.async = true;
+     s.parentNode.insertBefore(wf, s);
+
+     WebFont.load({
+        google: {
+          families
+        }
+      });
     },
 
     addToggle: function() {
