@@ -17,11 +17,16 @@ const MerriamWebsterDictionary = {
 
   formattedData: function(res, text){
     if (res.data.length > 0 ) {
+      const firstResult = res.data[0];
+      const middleDot = String.fromCharCode(0x00B7);
+      const cons = firstResult.hwi.hw.replace(/\*/g, middleDot);
       return {
-        shortdef: res.data[0].shortdef,
-        date: res.data[0].date,
-        fl: res.data[0].fl,
-        link: `https://www.merriam-webster.com/dictionary/${text}`
+        date: firstResult.date,
+        fl: firstResult.fl,
+        link: `https://www.merriam-webster.com/dictionary/${text}`,
+        pronunciation: firstResult.hwi.prs[0].mw,
+        cons,
+        shortdef: firstResult.shortdef
       };
     }
     return {
