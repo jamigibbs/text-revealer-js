@@ -1,4 +1,9 @@
-<div disabled class="dfn-popover">
+
+{{#if dark}}
+<div disabled class="trjs-popover trjs-popover--dark">
+{{else}}
+<div disabled class="trjs-popover">
+{{/if}}
 
   <div id="trjs-close">
     <svg class="icon icon-cancel-circle">
@@ -15,10 +20,12 @@
     {{>'/_wikiSearch'}}
   </div>
 
+  {{#if data.dictionary.shortdef}}
   <div class="dictionary fadeInAnimated">
     <hr>
     {{>'/_dictionary'}}
   </div>
+  {{/if}}
 
   {{>'/_noresults'}}
 

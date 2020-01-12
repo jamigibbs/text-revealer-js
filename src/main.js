@@ -17,7 +17,8 @@ function TextRevealer(options = {}) {
     approvedTags: DEFAULT_APPROVED_TAGS,
     disabledTags: DEFAULT_DISABLED_TAGS,
     wikipedia: false,
-    merriamWebsterDictionary: false
+    merriamWebsterDictionary: false,
+    skin: 'light'
   }
 
   // Set default & user options
@@ -301,7 +302,11 @@ function TextRevealer(options = {}) {
 
       const popover = document.createElement('dfn');
       popover.title = this.text;
-      popover.innerHTML = PopoverTemplate({ selected: this.text, data });
+      popover.innerHTML = PopoverTemplate({
+        dark: options.skin === 'dark',
+        selected: this.text, 
+        data 
+      });
 
       if (window.getSelection) {
         const sel = window.getSelection();
@@ -372,18 +377,20 @@ function TextRevealer(options = {}) {
      * overflow the window width.
      */
     positionPopover: function() {
-      const popover = document.querySelector('.dfn-popover');
-      // width of the window.
-      const ww = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-      // position of the hovered element relative to window.
-      const pos = this.getPosition(popover); 
+      const popover = document.querySelector('.trjs-popover');
+      if (popover) {
+        // width of the window.
+        const ww = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+        // position of the hovered element relative to window.
+        const pos = this.getPosition(popover); 
 
-      // element is on right side of viewport.
-      if (pos.x > (ww / 2)) {
-        popover.style.right = '0';
-      // element is on left side of viewport.
-      } else {
-        popover.style.left = '0';
+        // element is on right side of viewport.
+        if (pos.x > (ww / 2)) {
+          popover.style.right = '0';
+        // element is on left side of viewport.
+        } else {
+          popover.style.left = '0';
+        }
       }
     }
 

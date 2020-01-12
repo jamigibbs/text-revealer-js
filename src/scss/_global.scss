@@ -2,14 +2,18 @@ $font-open-sans: "Open Sans";
 $font-crimson-text: "Crimson Text";
 
 $color-highlight: #fff9c4;
-$color-dark: #333333;
+$color-dark: #222831;
+$color-dark-alt: #393e46;
 $color-white: #ffffff;
 $color-black: #000000;
 $color-blue: #2196F3;
-$color-grey: #cccccc;
-$color-grey-light: #efefef;
+$color-grey: #eeeeee;
+$color-grey-light: #aaaaaa;
+$color-grey-lighter: #efefef;
 $color-red: #f74547;
 $color-red-light: #ff8788;
+$color-teal: #00adb5;
+$color-teal-light: #19d8e0;
 
 $z-index-9999: 9999;
 
@@ -24,6 +28,12 @@ $z-index-9999: 9999;
     transition: color .4s ease;
     &:hover {
       color: $color-red-light;
+    }
+  }
+  .trjs-popover.trjs-popover--dark a {
+    color: $color-teal;
+    &:hover {
+      color: $color-teal-light;
     }
   }
   hr {
@@ -41,7 +51,7 @@ $z-index-9999: 9999;
       content: attr(title);
       font-style: normal;
     }
-    > .dfn-popover {
+    > .trjs-popover {
       background-color: $color-white;
       border: none;
       border-radius: 7px;
@@ -54,16 +64,25 @@ $z-index-9999: 9999;
       position: absolute; 
       text-align: left;
       width: 30em;
+      &--dark {
+        background-color: $color-dark;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        color: $color-grey;
+      }
     }
   }
-  .dfn-popover {
-    color: rgba(0,0,0,0.87);
+  .trjs-popover {
+    color: rgba(0, 0, 0, 0.87);
     font-family: $font-open-sans;
     font-style: normal;
     z-index: $z-index-9999;
+    &--dark {
+      color: $color-grey;
+    }
   }
   &__header {
-    color: $color-dark;
     font-family: $font-crimson-text;
     font-size: 35px;
     font-weight: 400;
@@ -98,7 +117,7 @@ $z-index-9999: 9999;
       margin-top: 10px;
     }
     &__pronunciation {
-      color: $color-grey;
+      color: $color-grey-light;
       font-family: $font-open-sans;
       font-size: 16px;
       font-style: italic;
@@ -126,7 +145,7 @@ $z-index-9999: 9999;
   }
 }
 
-#trjs-close {
+.trjs-popover #trjs-close {
   height: 2rem;
   position: absolute;
   right: 2rem;
@@ -134,15 +153,26 @@ $z-index-9999: 9999;
   width: 1rem;
   .icon {
     display: inline-block;
-    fill: $color-grey;
+    fill: $color-white;
     height: 2rem;
     stroke-width: 0;
-    stroke: $color-grey;
+    stroke: $color-white;
     transition: fill .4s ease;
     width: 2rem;
     &:hover {
       cursor: pointer;
-      fill: $color-dark;
+      fill: $color-black;
+      stroke: $color-black;
+    }
+  }
+}
+
+.trjs-popover.trjs-popover--dark #trjs-close {
+  .icon {
+    fill: $color-dark-alt;
+    stroke: $color-dark-alt;
+    &:hover {
+      fill: $color-grey;
       stroke: $color-grey;
     }
   }
@@ -167,10 +197,10 @@ $z-index-9999: 9999;
       width: 0;
       height: 0;
       &:checked + .slider {
-        background-color: $color-blue;
+        background-color: $color-teal;
       }
       &:focus + .slider {
-        box-shadow: 0 0 1px $color-blue;
+        box-shadow: 0 0 1px $color-teal;
       }
       &:checked + .slider:before {
         -webkit-transform: translateX(26px);
@@ -180,7 +210,7 @@ $z-index-9999: 9999;
     }
   }
   .slider {
-    background-color: $color-grey;
+    background-color: $color-dark-alt;
     bottom: 0;
     cursor: pointer;
     height: 100%;

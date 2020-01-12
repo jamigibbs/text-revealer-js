@@ -19,10 +19,11 @@ const MerriamWebsterDictionary = {
     if (res.data.length > 0 ) {
       const firstResult = res.data[0];
       const middleDot = String.fromCharCode(0x00B7);
-      const hwi = firstResult.hwi;
+      const hwi = firstResult.hwi || null;
       const hw = hwi ? hwi.hw : null;
       const cons = hw ? hw.replace(/\*/g, middleDot) : '';
-      const pronunciation = firstResult.hwi.prs ? firstResult.hwi.prs[0].mw : null;
+
+      const pronunciation = hwi && firstResult.hwi.prs ? firstResult.hwi.prs[0].mw : null;
       return {
         date: firstResult.date,
         fl: firstResult.fl,
