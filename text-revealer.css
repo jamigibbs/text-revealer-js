@@ -9,11 +9,15 @@
     transition: color .4s ease; }
     .trjs a:hover {
       color: #ff8788; }
+  .trjs .trjs-popover.trjs-popover--dark a {
+    color: #00adb5; }
+    .trjs .trjs-popover.trjs-popover--dark a:hover {
+      color: #19d8e0; }
   .trjs hr {
     display: block;
     height: 1px;
     border: 0;
-    border-top: 2px solid #efefef;
+    border-top: 2px solid #aaaaaa;
     margin: 1em 0;
     padding: 0; }
   .trjs dfn {
@@ -22,7 +26,7 @@
     .trjs dfn:before {
       content: attr(title);
       font-style: normal; }
-    .trjs dfn > .dfn-popover {
+    .trjs dfn > .trjs-popover {
       background-color: #ffffff;
       border: none;
       border-radius: 7px;
@@ -35,15 +39,22 @@
       position: absolute;
       text-align: left;
       width: 30em; }
-  .trjs .dfn-popover {
+      .trjs dfn > .trjs-popover--dark {
+        background-color: #222831;
+        -webkit-box-shadow: none;
+        -moz-box-shadow: none;
+        box-shadow: none;
+        color: #eeeeee; }
+  .trjs .trjs-popover {
     color: rgba(0, 0, 0, 0.87);
     font-family: "Open Sans";
     font-style: normal;
     z-index: 9999; }
+    .trjs .trjs-popover--dark {
+      color: #eeeeee; }
   .trjs__header {
-    color: #333333;
     font-family: "Crimson Text";
-    font-size: 45px;
+    font-size: 35px;
     font-weight: 400;
     font-style: normal;
     line-height: 48px;
@@ -59,9 +70,27 @@
   .trjs .wiki-search__header {
     font-size: 14px;
     font-weight: bold; }
-  .trjs .dictionary-result {
+  .trjs .dictionary {
     animation-delay: 0.6s; }
+    .trjs .dictionary__header {
+      font-family: "Crimson Text";
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      margin-top: 10px; }
+    .trjs .dictionary__pronunciation {
+      color: #aaaaaa;
+      font-family: "Open Sans";
+      font-size: 16px;
+      font-style: italic;
+      font-weight: normal;
+      margin: 0; }
+    .trjs .dictionary__type {
+      font-weight: normal;
+      margin-top: 5px;
+      margin-bottom: 25p; }
   .trjs .fadeInAnimated {
+    top: 0;
     opacity: 0;
     animation-name: fadeIn;
     animation-duration: 1s;
@@ -73,24 +102,31 @@
   to {
     opacity: 1; } }
 
-#trjs-close {
+.trjs-popover #trjs-close {
   height: 2rem;
   position: absolute;
   right: 2rem;
   top: 1rem;
   width: 1rem; }
-  #trjs-close .icon {
+  .trjs-popover #trjs-close .icon {
     display: inline-block;
-    fill: #cccccc;
+    fill: #ffffff;
     height: 2rem;
     stroke-width: 0;
-    stroke: #cccccc;
+    stroke: #ffffff;
     transition: fill .4s ease;
     width: 2rem; }
-    #trjs-close .icon:hover {
+    .trjs-popover #trjs-close .icon:hover {
       cursor: pointer;
       fill: #000000;
-      stroke: #cccccc; }
+      stroke: #000000; }
+
+.trjs-popover.trjs-popover--dark #trjs-close .icon {
+  fill: #393e46;
+  stroke: #393e46; }
+  .trjs-popover.trjs-popover--dark #trjs-close .icon:hover {
+    fill: #eeeeee;
+    stroke: #eeeeee; }
 
 .trjs-toggle-container {
   display: block !important;
@@ -110,15 +146,15 @@
       width: 0;
       height: 0; }
       .trjs-toggle-container .switch input:checked + .slider {
-        background-color: #2196F3; }
+        background-color: #00adb5; }
       .trjs-toggle-container .switch input:focus + .slider {
-        box-shadow: 0 0 1px #2196F3; }
+        box-shadow: 0 0 1px #00adb5; }
       .trjs-toggle-container .switch input:checked + .slider:before {
         -webkit-transform: translateX(26px);
         -ms-transform: translateX(26px);
         transform: translateX(26px); }
   .trjs-toggle-container .slider {
-    background-color: #cccccc;
+    background-color: #393e46;
     bottom: 0;
     cursor: pointer;
     height: 100%;
