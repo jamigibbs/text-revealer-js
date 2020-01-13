@@ -1868,6 +1868,7 @@
 
     }
   }
+  new TextRevealer().init();
 
   return TextRevealer;
 

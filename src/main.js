@@ -8,6 +8,8 @@ const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','h
 const DEFAULT_DISABLED_TAGS = ['input', 'textarea','code'];
 
 function TextRevealer(options = {}) {
+
+  console.log(options)
   
   this.options = options = Object.assign({}, options);
 
@@ -287,7 +289,7 @@ function TextRevealer(options = {}) {
         Promise.all(routePromises).then((res)=> {
           resolve(res);
         })
-        .catch((error) => reject(error));;
+        .catch((error) => reject(error));
       })
     },
 
@@ -396,5 +398,7 @@ function TextRevealer(options = {}) {
 
   }
 };
+
+new TextRevealer().init()
 
 export default TextRevealer;
