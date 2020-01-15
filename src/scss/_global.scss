@@ -24,11 +24,15 @@ $z-index-9999: 9999;
   z-index: $z-index-9999;
   a {
     color: $color-red;
+    font-weight: normal;
     text-decoration: none;
     transition: color .4s ease;
     &:hover {
       color: $color-red-light;
     }
+  }
+  p {
+    font-size: 16px!important;
   }
   .trjs-popover.trjs-popover--dark a {
     color: $color-teal;
@@ -37,12 +41,21 @@ $z-index-9999: 9999;
     }
   }
   hr {
+    background-color: $color-grey-lighter;
+    border: 0;
+    border-top: 2px solid $color-grey-lighter;
     display: block;
     height: 1px;
-    border: 0;
-    border-top: 2px solid $color-grey-light;
     margin: 1em 0;
     padding: 0;
+  }
+  .trjs-popover.trjs-popover--dark hr {
+    background-color: $color-black;
+    border-top: 2px solid $color-black;
+  }
+  ul {
+    font-size: 16px;
+    margin: 0.3em 0 0.3em 1em;
   }
   dfn {
     display: inline-block;
@@ -65,11 +78,11 @@ $z-index-9999: 9999;
       text-align: left;
       width: 30em;
       &--dark {
-        background-color: $color-dark;
+        background-color: $color-dark!important;
         -webkit-box-shadow: none;
         -moz-box-shadow: none;
         box-shadow: none;
-        color: $color-grey;
+        color: $color-grey!important;
       }
     }
   }
@@ -80,15 +93,18 @@ $z-index-9999: 9999;
     z-index: $z-index-9999;
     &--dark {
       color: $color-grey;
+      .trjs__header, .wiki-search__header, .dictionary__header {
+        color: $color-grey;
+      }
     }
   }
   &__header {
-    font-family: $font-crimson-text;
-    font-size: 35px;
-    font-weight: 400;
-    font-style: normal;
-    line-height: 48px;
-    margin: 0 0 20px 0;
+    font-family: $font-crimson-text!important;
+    font-size: 35px!important;
+    font-weight: 400!important;
+    font-style: normal!important;
+    line-height: 48px!important;
+    margin: 0 0 20px 0!important;
   }
   &__wiki-summary-header {
     animation-delay: 0.3s;
@@ -103,7 +119,7 @@ $z-index-9999: 9999;
   }
   .wiki-search {
     &__header {
-      font-size: 14px;
+      font-size: 14px!important;
       font-weight: bold;
     }
   }
@@ -111,7 +127,7 @@ $z-index-9999: 9999;
     animation-delay: 0.6s;
     &__header {
       font-family: $font-crimson-text;
-      font-size: 20px;
+      font-size: 20px!important;
       font-weight: bold;
       margin-bottom: 5px;
       margin-top: 10px;
@@ -119,7 +135,7 @@ $z-index-9999: 9999;
     &__pronunciation {
       color: $color-grey-light;
       font-family: $font-open-sans;
-      font-size: 16px;
+      font-size: 16px!important;
       font-style: italic;
       font-weight: normal;
       margin: 0;
@@ -153,27 +169,27 @@ $z-index-9999: 9999;
   width: 1rem;
   .icon {
     display: inline-block;
-    fill: $color-white;
+    fill: $color-grey-light!important;
     height: 2rem;
     stroke-width: 0;
-    stroke: $color-white;
+    stroke: $color-grey-light!important;
     transition: fill .4s ease;
     width: 2rem;
     &:hover {
       cursor: pointer;
-      fill: $color-black;
-      stroke: $color-black;
+      fill: $color-black!important;
+      stroke: $color-black!important;
     }
   }
 }
 
 .trjs-popover.trjs-popover--dark #trjs-close {
   .icon {
-    fill: $color-dark-alt;
-    stroke: $color-dark-alt;
+    fill: $color-dark-alt!important;
+    stroke: $color-dark-alt!important;
     &:hover {
-      fill: $color-grey;
-      stroke: $color-grey;
+      fill: $color-grey!important;
+      stroke: $color-grey!important;
     }
   }
 }
@@ -197,10 +213,10 @@ $z-index-9999: 9999;
       width: 0;
       height: 0;
       &:checked + .slider {
-        background-color: $color-teal;
+        background-color: $color-blue;
       }
       &:focus + .slider {
-        box-shadow: 0 0 1px $color-teal;
+        box-shadow: 0 0 1px $color-blue;
       }
       &:checked + .slider:before {
         -webkit-transform: translateX(26px);
@@ -210,7 +226,7 @@ $z-index-9999: 9999;
     }
   }
   .slider {
-    background-color: $color-dark-alt;
+    background-color: $color-grey;
     bottom: 0;
     cursor: pointer;
     height: 100%;
