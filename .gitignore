@@ -21,5 +21,7 @@ node_modules/
 .DS_Store
 
 _global.js*
+_global.css*
+_global.min.js*
 web-dev.js*
 *.map
