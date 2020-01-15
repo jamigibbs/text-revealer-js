@@ -35,3 +35,26 @@ Assign options and initialize the script:
 
   myTextRevealer.init();
 ```
+
+## Usage with Witchcraft 
+
+[Witchcraft](https://luciopaiva.com/witchcraft/) is a Google Chrome extension for loading custom Javascript and CSS directly from a folder in your file system and injecting them into pages.
+
+You can use Witchcraft to load this script across all sites while you're browsing the web. To do that, install the Witchcraft extension, follow their [installation instructions](https://luciopaiva.com/witchcraft/how-to-install.html), and rename the following file:
+
+`text-revealer.css` to `_global.css`
+
+Then create a file called `_global.js` and add to it the following (where you can customize the settings however you'd like):
+
+```js
+  // @include text-revealer.min.js
+
+  const myTextRevealer = new TextRevealer({ 
+    wikipedia: true,
+    merriamWebsterDictionary: false,
+    delay: 500,
+    scrollIntoView: true
+  });
+
+  myTextRevealer.init();
+```
