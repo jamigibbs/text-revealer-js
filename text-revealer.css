@@ -5,21 +5,31 @@
   z-index: 9999; }
   .trjs a {
     color: #f74547;
+    font-weight: normal;
     text-decoration: none;
     transition: color .4s ease; }
     .trjs a:hover {
       color: #ff8788; }
+  .trjs p {
+    font-size: 16px !important; }
   .trjs .trjs-popover.trjs-popover--dark a {
     color: #00adb5; }
     .trjs .trjs-popover.trjs-popover--dark a:hover {
       color: #19d8e0; }
   .trjs hr {
+    background-color: #efefef;
+    border: 0;
+    border-top: 2px solid #efefef;
     display: block;
     height: 1px;
-    border: 0;
-    border-top: 2px solid #aaaaaa;
     margin: 1em 0;
     padding: 0; }
+  .trjs .trjs-popover.trjs-popover--dark hr {
+    background-color: #000000;
+    border-top: 2px solid #000000; }
+  .trjs ul {
+    font-size: 16px;
+    margin: 0.3em 0 0.3em 1em; }
   .trjs dfn {
     display: inline-block;
     position: relative; }
@@ -40,11 +50,11 @@
       text-align: left;
       width: 30em; }
       .trjs dfn > .trjs-popover--dark {
-        background-color: #222831;
+        background-color: #222831 !important;
         -webkit-box-shadow: none;
         -moz-box-shadow: none;
         box-shadow: none;
-        color: #eeeeee; }
+        color: #eeeeee !important; }
   .trjs .trjs-popover {
     color: rgba(0, 0, 0, 0.87);
     font-family: "Open Sans";
@@ -52,13 +62,15 @@
     z-index: 9999; }
     .trjs .trjs-popover--dark {
       color: #eeeeee; }
+      .trjs .trjs-popover--dark .trjs__header, .trjs .trjs-popover--dark .wiki-search__header, .trjs .trjs-popover--dark .dictionary__header {
+        color: #eeeeee; }
   .trjs__header {
-    font-family: "Crimson Text";
-    font-size: 35px;
-    font-weight: 400;
-    font-style: normal;
-    line-height: 48px;
-    margin: 0 0 20px 0; }
+    font-family: "Crimson Text" !important;
+    font-size: 35px !important;
+    font-weight: 400 !important;
+    font-style: normal !important;
+    line-height: 48px !important;
+    margin: 0 0 20px 0 !important; }
   .trjs__wiki-summary-header {
     animation-delay: 0.3s;
     font-style: normal;
@@ -68,20 +80,20 @@
     .trjs .wiki-summary__link {
       white-space: nowrap; }
   .trjs .wiki-search__header {
-    font-size: 14px;
+    font-size: 14px !important;
     font-weight: bold; }
   .trjs .dictionary {
     animation-delay: 0.6s; }
     .trjs .dictionary__header {
       font-family: "Crimson Text";
-      font-size: 20px;
+      font-size: 20px !important;
       font-weight: bold;
       margin-bottom: 5px;
       margin-top: 10px; }
     .trjs .dictionary__pronunciation {
       color: #aaaaaa;
       font-family: "Open Sans";
-      font-size: 16px;
+      font-size: 16px !important;
       font-style: italic;
       font-weight: normal;
       margin: 0; }
@@ -110,23 +122,23 @@
   width: 1rem; }
   .trjs-popover #trjs-close .icon {
     display: inline-block;
-    fill: #ffffff;
+    fill: #aaaaaa !important;
     height: 2rem;
     stroke-width: 0;
-    stroke: #ffffff;
+    stroke: #aaaaaa !important;
     transition: fill .4s ease;
     width: 2rem; }
     .trjs-popover #trjs-close .icon:hover {
       cursor: pointer;
-      fill: #000000;
-      stroke: #000000; }
+      fill: #000000 !important;
+      stroke: #000000 !important; }
 
 .trjs-popover.trjs-popover--dark #trjs-close .icon {
-  fill: #393e46;
-  stroke: #393e46; }
+  fill: #393e46 !important;
+  stroke: #393e46 !important; }
   .trjs-popover.trjs-popover--dark #trjs-close .icon:hover {
-    fill: #eeeeee;
-    stroke: #eeeeee; }
+    fill: #eeeeee !important;
+    stroke: #eeeeee !important; }
 
 .trjs-toggle-container {
   display: block !important;
@@ -146,15 +158,15 @@
       width: 0;
       height: 0; }
       .trjs-toggle-container .switch input:checked + .slider {
-        background-color: #00adb5; }
+        background-color: #2196F3; }
       .trjs-toggle-container .switch input:focus + .slider {
-        box-shadow: 0 0 1px #00adb5; }
+        box-shadow: 0 0 1px #2196F3; }
       .trjs-toggle-container .switch input:checked + .slider:before {
         -webkit-transform: translateX(26px);
         -ms-transform: translateX(26px);
         transform: translateX(26px); }
   .trjs-toggle-container .slider {
-    background-color: #393e46;
+    background-color: #eeeeee;
     bottom: 0;
     cursor: pointer;
     height: 100%;
