@@ -51,13 +51,6 @@ function TextRevealer(options = {}) {
       });
 
       window.addEventListener('load', () => {
-
-        WebFont.load({
-           google: {
-             families: ['Open+Sans:400,300,700', 'Crimson+Text:400,700']
-           }
-         });
-
         /**
          * Adding the on/off toggle to the end of the body tag.
          */
@@ -98,10 +91,18 @@ function TextRevealer(options = {}) {
      * @ref https://github.com/typekit/webfontloader
      */
     addWebFont: function() {
-     const wf = document.createElement('script'), s = document.scripts[0];
-     wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
-     wf.async = true;
-     s.parentNode.insertBefore(wf, s);
+      window.WebFontConfig = {
+        google: {
+          families: ['Open+Sans:400,300,700', 'Crimson+Text:400,700']
+        }
+      };
+   
+      (function(d) {
+        var wf = d.createElement('script'), s = d.scripts[0];
+        wf.src = 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js';
+        wf.async = true;
+        s.parentNode.insertBefore(wf, s);
+      })(document);
     },
 
     addToggle: function() {
