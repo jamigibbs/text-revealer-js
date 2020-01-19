@@ -1,6 +1,6 @@
 /**
  * 
- *  Text Revealer JS v1.0.0
+ *  Text Revealer JS vv1.0.0-beta
  *  @author	jamigibbs | <jami0821@gmail.com>
  *  @url https://github.com/jamigibbs/text-revealer-js#readme
  *  @license MIT
@@ -1500,7 +1500,7 @@
           return undefined
       };
 
-    return ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSummary") : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":1,"column":0},"end":{"line":5,"column":7}}})) != null ? stack1 : "");
+    return ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSummary") : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"toggle.hbs","start":{"line":1,"column":0},"end":{"line":5,"column":7}}})) != null ? stack1 : "");
   },"useData":true});
   runtime$1.registerPartial('/_wikiSummary', Template);
 
@@ -1513,7 +1513,7 @@
       };
 
     return "\n  <h4 class=\"wiki-search__header\">More Wikipedia Results</h4>\n\n  <ul>\n"
-      + ((stack1 = lookupProperty(helpers,"each").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSearch") : stack1),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":6,"column":4},"end":{"line":8,"column":13}}})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"each").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSearch") : stack1),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"toggle.hbs","start":{"line":6,"column":4},"end":{"line":8,"column":13}}})) != null ? stack1 : "")
       + "  </ul>\n";
   },"2":function(container,depth0,helpers,partials,data) {
       var alias1=container.lambda, alias2=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -1536,7 +1536,7 @@
           return undefined
       };
 
-    return ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSearch") : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":1,"column":2},"end":{"line":10,"column":9}}})) != null ? stack1 : "");
+    return ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSearch") : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"toggle.hbs","start":{"line":1,"column":2},"end":{"line":10,"column":9}}})) != null ? stack1 : "");
   },"useData":true});
   runtime$1.registerPartial('/_wikiSearch', Template$1);
 
@@ -1549,13 +1549,13 @@
       };
 
     return "\n"
-      + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"cons") : stack1),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":3,"column":4},"end":{"line":5,"column":11}}})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"cons") : stack1),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"toggle.hbs","start":{"line":3,"column":4},"end":{"line":5,"column":11}}})) != null ? stack1 : "")
       + "\n"
-      + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"pronunciation") : stack1),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":7,"column":4},"end":{"line":9,"column":11}}})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"pronunciation") : stack1),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"toggle.hbs","start":{"line":7,"column":4},"end":{"line":9,"column":11}}})) != null ? stack1 : "")
       + "\n"
-      + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"fl") : stack1),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":11,"column":4},"end":{"line":13,"column":11}}})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"fl") : stack1),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"toggle.hbs","start":{"line":11,"column":4},"end":{"line":13,"column":11}}})) != null ? stack1 : "")
       + "\n    <ul>\n"
-      + ((stack1 = lookupProperty(helpers,"each").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"shortdef") : stack1),{"name":"each","hash":{},"fn":container.program(8, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":16,"column":6},"end":{"line":18,"column":15}}})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"each").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"shortdef") : stack1),{"name":"each","hash":{},"fn":container.program(8, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"toggle.hbs","start":{"line":16,"column":6},"end":{"line":18,"column":15}}})) != null ? stack1 : "")
       + "    </ul>\n    \n    <a class=\"dictionary__more-link\" href=\""
       + container.escapeExpression(container.lambda(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"link") : stack1), depth0))
       + "\" target=\"_blank\">Find out more &raquo;</a>\n";
@@ -1604,7 +1604,7 @@
           return undefined
       };
 
-    return ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"shortdef") : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":1,"column":2},"end":{"line":22,"column":9}}})) != null ? stack1 : "")
+    return ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"shortdef") : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"toggle.hbs","start":{"line":1,"column":2},"end":{"line":22,"column":9}}})) != null ? stack1 : "")
       + "  ";
   },"useData":true});
   runtime$1.registerPartial('/_dictionary', Template$2);
@@ -1617,7 +1617,7 @@
           return undefined
       };
 
-    return ((stack1 = lookupProperty(helpers,"unless").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"shortDef") : stack1),{"name":"unless","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":2,"column":4},"end":{"line":4,"column":15}}})) != null ? stack1 : "");
+    return ((stack1 = lookupProperty(helpers,"unless").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"shortDef") : stack1),{"name":"unless","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"toggle.hbs","start":{"line":2,"column":4},"end":{"line":4,"column":15}}})) != null ? stack1 : "");
   },"2":function(container,depth0,helpers,partials,data) {
       return "      <p>Sorry, no results found.</p>\n";
   },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
@@ -1628,7 +1628,7 @@
           return undefined
       };
 
-    return ((stack1 = lookupProperty(helpers,"unless").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSearch") : stack1),{"name":"unless","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":1,"column":2},"end":{"line":5,"column":13}}})) != null ? stack1 : "");
+    return ((stack1 = lookupProperty(helpers,"unless").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSearch") : stack1),{"name":"unless","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"toggle.hbs","start":{"line":1,"column":2},"end":{"line":5,"column":13}}})) != null ? stack1 : "");
   },"useData":true});
   runtime$1.registerPartial('/_noresults', Template$3);
 
@@ -1656,15 +1656,15 @@
       };
 
     return "\n"
-      + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"dark") : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data,"loc":{"start":{"line":2,"column":0},"end":{"line":6,"column":7}}})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"dark") : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data,"loc":{"source":"toggle.hbs","start":{"line":2,"column":0},"end":{"line":6,"column":7}}})) != null ? stack1 : "")
       + "\n  <div id=\"trjs-close\">\n    <svg class=\"icon icon-cancel-circle\">\n      <path d=\"M16 0c-8.837 0-16 7.163-16 16s7.163 16 16 16 16-7.163 16-16-7.163-16-16-16zM16 29c-7.18 0-13-5.82-13-13s5.82-13 13-13 13 5.82 13 13-5.82 13-13 13z\"></path>\n      <path d=\"M21 8l-5 5-5-5-3 3 5 5-5 5 3 3 5-5 5 5 3-3-5-5 5-5z\"></path>\n    </svg>\n  </div>\n  \n  <h4 class=\"trjs__header fadeInAnimated\">"
-      + container.escapeExpression(((helper = (helper = lookupProperty(helpers,"selected") || (depth0 != null ? lookupProperty(depth0,"selected") : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"selected","hash":{},"data":data,"loc":{"start":{"line":15,"column":42},"end":{"line":15,"column":56}}}) : helper)))
+      + container.escapeExpression(((helper = (helper = lookupProperty(helpers,"selected") || (depth0 != null ? lookupProperty(depth0,"selected") : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"selected","hash":{},"data":data,"loc":{"source":"toggle.hbs","start":{"line":15,"column":42},"end":{"line":15,"column":56}}}) : helper)))
       + "</h4>\n\n  <div class=\"wiki-summary fadeInAnimated\">\n"
       + ((stack1 = container.invokePartial(lookupProperty(partials,"/_wikiSummary"),depth0,{"name":"/_wikiSummary","data":data,"indent":"    ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
       + "\n"
       + ((stack1 = container.invokePartial(lookupProperty(partials,"/_wikiSearch"),depth0,{"name":"/_wikiSearch","data":data,"indent":"    ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
       + "  </div>\n\n"
-      + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"shortdef") : stack1),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":23,"column":2},"end":{"line":28,"column":9}}})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"shortdef") : stack1),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"toggle.hbs","start":{"line":23,"column":2},"end":{"line":28,"column":9}}})) != null ? stack1 : "")
       + "\n"
       + ((stack1 = container.invokePartial(lookupProperty(partials,"/_noresults"),depth0,{"name":"/_noresults","data":data,"indent":"  ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
       + "\n</div>";
