@@ -1386,7 +1386,7 @@
     searchRoute: function(search) {
       const params = {
         action: 'opensearch',
-        search,
+        search: encodeURIComponent(search),
         limit: '5',
         namespace: '0',
         format: 'json'
@@ -1442,7 +1442,7 @@
         key: options.key
       };
 
-      let dictionaryRoute = `${this.baseUrl}/${options.searchText}?`;
+      let dictionaryRoute = `${this.baseUrl}/${encodeURIComponent(options.searchText)}?`;
       Object.keys(params).forEach((key) => {dictionaryRoute += "&" + key + "=" + params[key];});
       return dictionaryRoute;
     },
@@ -1475,8 +1475,8 @@
 
   };
 
-  const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','a','pre'];
-  const DEFAULT_DISABLED_TAGS = ['input', 'textarea','code'];
+  const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','pre','b','strong'];
+  const DEFAULT_DISABLED_TAGS = ['input', 'textarea', 'code', 'a'];
 
   function TextRevealer(options = {}) {
     
@@ -1489,7 +1489,8 @@
       disabledTags: DEFAULT_DISABLED_TAGS,
       wikipedia: false,
       merriamWebsterDictionary: false,
-      skin: 'light'
+      skin: 'light',
+      maxTextCount: 3
     };
 
     // Set default & user options
@@ -1642,9 +1643,11 @@
         if (this.text || isDisabledTag || !this.isActive) return;
 
         try {
-          this.text = (document.all) ? document.selection.createRange().text : document.getSelection().toString();
+          this.text = (document.all) ? document.selection.createRange().trim() : document.getSelection().toString().trim();
 
-          if (this.text) {
+          const textCount = this.text.split(' ').length;
+
+          if (this.text && textCount <= options.maxTextCount) {
             this.handleFetch(this.text)
               .then((results) => {
                 this.routePromises = [];
@@ -1701,12 +1704,19 @@
                   this.displayPopover(formattedResults);
                 }
               })
-              .catch((error) => console.log('wiki summaryRoute error', error));
+              .catch((error) => {
+                this.text = '';
+                console.log('wiki summaryRoute error', error);
+              });
+          } else {
+            this.text = '';
           }
 
         } catch(error) {
+          this.text = '';
           console.error('handleTextReveal error: ', error);
         }
+        
       },
 
       /**
