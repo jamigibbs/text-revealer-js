@@ -57,6 +57,9 @@
     .trjs dfn > .trjs-popover {
       background-color: #ffffff;
       border: none;
+      -webkit-box-shadow: 0px 0px 5px 1px #cccccc;
+      -moz-box-shadow: 0px 0px 5px 1px #cccccc;
+      box-shadow: 0px 0px 5px 1px #cccccc;
       display: block;
       min-height: 240px;
       padding: 40px;
