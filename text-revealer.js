@@ -1,6 +1,6 @@
 /**
  * 
- *  Text Revealer JS v0.1.0
+ *  Text Revealer JS v1.0.0
  *  @author	jamigibbs | <jami0821@gmail.com>
  *  @url https://github.com/jamigibbs/text-revealer-js#readme
  *  @license MIT
