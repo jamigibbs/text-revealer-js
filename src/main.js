@@ -18,7 +18,8 @@ function TextRevealer(options = {}) {
     disabledTags: DEFAULT_DISABLED_TAGS,
     wikipedia: false,
     merriamWebsterDictionary: false,
-    skin: 'light'
+    skin: 'light',
+    maxTextCount: 3
   }
 
   // Set default & user options
@@ -173,7 +174,9 @@ function TextRevealer(options = {}) {
       try {
         this.text = (document.all) ? document.selection.createRange().trim() : document.getSelection().toString().trim();
 
-        if (this.text) {
+        const textCount = this.text.split(' ').length;
+
+        if (this.text && textCount <= options.maxTextCount) {
           this.handleFetch(this.text)
             .then((results) => {
               this.routePromises = [];
@@ -230,12 +233,19 @@ function TextRevealer(options = {}) {
                 this.displayPopover(formattedResults);
               }
             })
-            .catch((error) => console.log('wiki summaryRoute error', error));
+            .catch((error) => {
+              this.text = '';
+              console.log('wiki summaryRoute error', error)
+            });
+        } else {
+          this.text = '';
         }
 
       } catch(error) {
+        this.text = '';
         console.error('handleTextReveal error: ', error);
       }
+      
     },
 
     /**
