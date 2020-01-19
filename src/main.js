@@ -4,8 +4,8 @@ import ToggleTemplate from './views/toggle.hbs';
 import Wikipedia from './routes/wikipedia';
 import MerriamWebsterDictionary from './routes/merriam-webster-dictionary';
 
-const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','a','pre'];
-const DEFAULT_DISABLED_TAGS = ['input', 'textarea','code'];
+const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','pre','b','strong'];
+const DEFAULT_DISABLED_TAGS = ['input', 'textarea', 'code', 'a'];
 
 function TextRevealer(options = {}) {
   
@@ -171,7 +171,7 @@ function TextRevealer(options = {}) {
       if (this.text || isDisabledTag || !this.isActive) return;
 
       try {
-        this.text = (document.all) ? document.selection.createRange().text : document.getSelection().toString();
+        this.text = (document.all) ? document.selection.createRange().trim() : document.getSelection().toString().trim();
 
         if (this.text) {
           this.handleFetch(this.text)
