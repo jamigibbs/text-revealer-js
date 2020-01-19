@@ -22,7 +22,7 @@ module.exports = {
     rollupNodeResolve(),
     rollupJson(),
     scss({
-      output: 'text-revealer.css'
+      output: ['_global.css', 'text-revealer.css']
     }),
     banner(bannerInfo),
     commonjs({ include: 'node_modules/**' }),
