@@ -32,7 +32,6 @@
   exports.createFrame = createFrame;
   exports.blockParams = blockParams;
   exports.appendContextPath = appendContextPath;
-
   var escape = {
     '&': '&amp;',
     '<': '&lt;',
@@ -163,16 +162,20 @@
   var exception = createCommonjsModule(function (module, exports) {
 
   exports.__esModule = true;
-
-  var errorProps = ['description', 'fileName', 'lineNumber', 'message', 'name', 'number', 'stack'];
+  var errorProps = ['description', 'fileName', 'lineNumber', 'endLineNumber', 'message', 'name', 'number', 'stack'];
 
   function Exception(message, node) {
     var loc = node && node.loc,
         line = undefined,
-        column = undefined;
+        endLineNumber = undefined,
+        column = undefined,
+        endColumn = undefined;
+
     if (loc) {
       line = loc.start.line;
+      endLineNumber = loc.end.line;
       column = loc.start.column;
+      endColumn = loc.end.column;
 
       message += ' - ' + line + ':' + column;
     }
@@ -192,6 +195,7 @@
     try {
       if (loc) {
         this.lineNumber = line;
+        this.endLineNumber = endLineNumber;
 
         // Work around issue under safari where we can't directly set the column value
         /* istanbul ignore next */
@@ -200,8 +204,13 @@
             value: column,
             enumerable: true
           });
+          Object.defineProperty(this, 'endColumn', {
+            value: endColumn,
+            enumerable: true
+          });
         } else {
           this.column = column;
+          this.endColumn = endColumn;
         }
       }
     } catch (nop) {
@@ -324,11 +333,21 @@
               execIteration(i, i, i === context.length - 1);
             }
           }
+        } else if (commonjsGlobal.Symbol && context[commonjsGlobal.Symbol.iterator]) {
+          var newContext = [];
+          var iterator = context[commonjsGlobal.Symbol.iterator]();
+          for (var it = iterator.next(); !it.done; it = iterator.next()) {
+            newContext.push(it.value);
+          }
+          context = newContext;
+          for (var j = context.length; i < j; i++) {
+            execIteration(i, i, i === context.length - 1);
+          }
         } else {
-          var priorKey = undefined;
+          (function () {
+            var priorKey = undefined;
 
-          for (var key in context) {
-            if (context.hasOwnProperty(key)) {
+            Object.keys(context).forEach(function (key) {
               // We're running the iterations one step out of sync so we can detect
               // the last iteration without have to scan the object twice and create
               // an itermediate keys array.
@@ -337,11 +356,11 @@
               }
               priorKey = key;
               i++;
+            });
+            if (priorKey !== undefined) {
+              execIteration(priorKey, i - 1, true);
             }
-          }
-          if (priorKey !== undefined) {
-            execIteration(priorKey, i - 1, true);
-          }
+          })();
         }
       }
 
@@ -391,11 +410,21 @@
   var _if = createCommonjsModule(function (module, exports) {
 
   exports.__esModule = true;
+  // istanbul ignore next
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 
+
+
+
+  var _exception2 = _interopRequireDefault(exception);
 
   exports['default'] = function (instance) {
     instance.registerHelper('if', function (conditional, options) {
+      if (arguments.length != 2) {
+        throw new _exception2['default']('#if requires exactly one argument');
+      }
       if (utils.isFunction(conditional)) {
         conditional = conditional.call(this);
       }
@@ -411,7 +440,14 @@
     });
 
     instance.registerHelper('unless', function (conditional, options) {
-      return instance.helpers['if'].call(this, conditional, { fn: options.inverse, inverse: options.fn, hash: options.hash });
+      if (arguments.length != 2) {
+        throw new _exception2['default']('#unless requires exactly one argument');
+      }
+      return instance.helpers['if'].call(this, conditional, {
+        fn: options.inverse,
+        inverse: options.fn,
+        hash: options.hash
+      });
     });
   };
 
@@ -456,14 +492,12 @@
   exports.__esModule = true;
 
   exports['default'] = function (instance) {
-    instance.registerHelper('lookup', function (obj, field) {
+    instance.registerHelper('lookup', function (obj, field, options) {
       if (!obj) {
+        // Note for 5.0: Change to "obj == null" in 5.0
         return obj;
       }
-      if (field === 'constructor' && !obj.propertyIsEnumerable(field)) {
-        return undefined;
-      }
-      return obj[field];
+      return options.lookupProperty(obj, field);
     });
   };
 
@@ -476,11 +510,21 @@
   var _with = createCommonjsModule(function (module, exports) {
 
   exports.__esModule = true;
+  // istanbul ignore next
+
+  function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
 
+
+
+
+  var _exception2 = _interopRequireDefault(exception);
 
   exports['default'] = function (instance) {
     instance.registerHelper('with', function (context, options) {
+      if (arguments.length != 2) {
+        throw new _exception2['default']('#with requires exactly one argument');
+      }
       if (utils.isFunction(context)) {
         context = context.call(this);
       }
@@ -656,8 +700,8 @@
 
       if (typeof console !== 'undefined' && logger.lookupLevel(logger.level) <= level) {
         var method = logger.methodMap[level];
+        // eslint-disable-next-line no-console
         if (!console[method]) {
-          // eslint-disable-line no-console
           method = 'log';
         }
 
@@ -676,6 +720,113 @@
   });
 
   unwrapExports(logger_1);
+
+  var createNewLookupObject_1 = createCommonjsModule(function (module, exports) {
+
+  exports.__esModule = true;
+  exports.createNewLookupObject = createNewLookupObject;
+
+
+
+  /**
+   * Create a new object with "null"-prototype to avoid truthy results on prototype properties.
+   * The resulting object can be used with "object[property]" to check if a property exists
+   * @param {...object} sources a varargs parameter of source objects that will be merged
+   * @returns {object}
+   */
+
+  function createNewLookupObject() {
+    for (var _len = arguments.length, sources = Array(_len), _key = 0; _key < _len; _key++) {
+      sources[_key] = arguments[_key];
+    }
+
+    return utils.extend.apply(undefined, [Object.create(null)].concat(sources));
+  }
+
+  });
+
+  unwrapExports(createNewLookupObject_1);
+  var createNewLookupObject_2 = createNewLookupObject_1.createNewLookupObject;
+
+  var protoAccess = createCommonjsModule(function (module, exports) {
+
+  exports.__esModule = true;
+  exports.createProtoAccessControl = createProtoAccessControl;
+  exports.resultIsAllowed = resultIsAllowed;
+  exports.resetLoggedProperties = resetLoggedProperties;
+  // istanbul ignore next
+
+  function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj['default'] = obj; return newObj; } }
+
+
+
+
+
+  var logger = _interopRequireWildcard(logger_1);
+
+  var loggedProperties = Object.create(null);
+
+  function createProtoAccessControl(runtimeOptions) {
+    var defaultMethodWhiteList = Object.create(null);
+    defaultMethodWhiteList['constructor'] = false;
+    defaultMethodWhiteList['__defineGetter__'] = false;
+    defaultMethodWhiteList['__defineSetter__'] = false;
+    defaultMethodWhiteList['__lookupGetter__'] = false;
+
+    var defaultPropertyWhiteList = Object.create(null);
+    // eslint-disable-next-line no-proto
+    defaultPropertyWhiteList['__proto__'] = false;
+
+    return {
+      properties: {
+        whitelist: createNewLookupObject_1.createNewLookupObject(defaultPropertyWhiteList, runtimeOptions.allowedProtoProperties),
+        defaultValue: runtimeOptions.allowProtoPropertiesByDefault
+      },
+      methods: {
+        whitelist: createNewLookupObject_1.createNewLookupObject(defaultMethodWhiteList, runtimeOptions.allowedProtoMethods),
+        defaultValue: runtimeOptions.allowProtoMethodsByDefault
+      }
+    };
+  }
+
+  function resultIsAllowed(result, protoAccessControl, propertyName) {
+    if (typeof result === 'function') {
+      return checkWhiteList(protoAccessControl.methods, propertyName);
+    } else {
+      return checkWhiteList(protoAccessControl.properties, propertyName);
+    }
+  }
+
+  function checkWhiteList(protoAccessControlForType, propertyName) {
+    if (protoAccessControlForType.whitelist[propertyName] !== undefined) {
+      return protoAccessControlForType.whitelist[propertyName] === true;
+    }
+    if (protoAccessControlForType.defaultValue !== undefined) {
+      return protoAccessControlForType.defaultValue;
+    }
+    logUnexpecedPropertyAccessOnce(propertyName);
+    return false;
+  }
+
+  function logUnexpecedPropertyAccessOnce(propertyName) {
+    if (loggedProperties[propertyName] !== true) {
+      loggedProperties[propertyName] = true;
+      logger.log('error', 'Handlebars: Access has been denied to resolve the property "' + propertyName + '" because it is not an "own property" of its parent.\n' + 'You can add a runtime option to disable the check or this warning:\n' + 'See https://handlebarsjs.com/api-reference/runtime-options.html#options-to-control-prototype-access for details');
+    }
+  }
+
+  function resetLoggedProperties() {
+    Object.keys(loggedProperties).forEach(function (propertyName) {
+      delete loggedProperties[propertyName];
+    });
+  }
+
+  });
+
+  unwrapExports(protoAccess);
+  var protoAccess_1 = protoAccess.createProtoAccessControl;
+  var protoAccess_2 = protoAccess.resultIsAllowed;
+  var protoAccess_3 = protoAccess.resetLoggedProperties;
 
   var base = createCommonjsModule(function (module, exports) {
 
@@ -699,7 +850,9 @@
 
   var _logger2 = _interopRequireDefault(logger_1);
 
-  var VERSION = '4.3.4';
+
+
+  var VERSION = '4.7.2';
   exports.VERSION = VERSION;
   var COMPILER_REVISION = 8;
   exports.COMPILER_REVISION = COMPILER_REVISION;
@@ -775,6 +928,13 @@
     },
     unregisterDecorator: function unregisterDecorator(name) {
       delete this.decorators[name];
+    },
+    /**
+     * Reset the memory of illegal property accesses that have already been logged.
+     * @deprecated should only be used in handlebars test-cases
+     */
+    resetLoggedPropertyAccesses: function resetLoggedPropertyAccesses() {
+      protoAccess.resetLoggedProperties();
     }
   };
 
@@ -814,6 +974,30 @@
 
   unwrapExports(safeString);
 
+  var wrapHelper_1 = createCommonjsModule(function (module, exports) {
+
+  exports.__esModule = true;
+  exports.wrapHelper = wrapHelper;
+
+  function wrapHelper(helper, transformOptionsFn) {
+    if (typeof helper !== 'function') {
+      // This should not happen, but apparently it does in https://github.com/wycats/handlebars.js/issues/1639
+      // We try to make the wrapper least-invasive by not wrapping it, if the helper is not a function.
+      return helper;
+    }
+    var wrapper = function wrapper() /* dynamic arguments */{
+      var options = arguments[arguments.length - 1];
+      arguments[arguments.length - 1] = transformOptionsFn(options);
+      return helper.apply(this, arguments);
+    };
+    return wrapper;
+  }
+
+  });
+
+  unwrapExports(wrapHelper_1);
+  var wrapHelper_2 = wrapHelper_1.wrapHelper;
+
   var runtime = createCommonjsModule(function (module, exports) {
 
   exports.__esModule = true;
@@ -843,6 +1027,10 @@
 
 
 
+
+
+
+
   function checkRevision(compilerInfo) {
     var compilerRevision = compilerInfo && compilerInfo[0] || 1,
         currentRevision = base.COMPILER_REVISION;
@@ -862,7 +1050,6 @@
   }
 
   function template(templateSpec, env) {
-
     /* istanbul ignore next */
     if (!env) {
       throw new _exception2['default']('No environment passed to template');
@@ -889,13 +1076,16 @@
       }
       partial = env.VM.resolvePartial.call(this, partial, context, options);
 
-      var optionsWithHooks = Utils.extend({}, options, { hooks: this.hooks });
+      var extendedOptions = Utils.extend({}, options, {
+        hooks: this.hooks,
+        protoAccessControl: this.protoAccessControl
+      });
 
-      var result = env.VM.invokePartial.call(this, partial, context, optionsWithHooks);
+      var result = env.VM.invokePartial.call(this, partial, context, extendedOptions);
 
       if (result == null && env.compile) {
         options.partials[options.name] = env.compile(partial, templateSpec.compilerOptions, env);
-        result = options.partials[options.name](context, optionsWithHooks);
+        result = options.partials[options.name](context, extendedOptions);
       }
       if (result != null) {
         if (options.indent) {
@@ -917,16 +1107,33 @@
 
     // Just add water
     var container = {
-      strict: function strict(obj, name) {
-        if (!(name in obj)) {
-          throw new _exception2['default']('"' + name + '" not defined in ' + obj);
+      strict: function strict(obj, name, loc) {
+        if (!obj || !(name in obj)) {
+          throw new _exception2['default']('"' + name + '" not defined in ' + obj, {
+            loc: loc
+          });
         }
         return obj[name];
+      },
+      lookupProperty: function lookupProperty(parent, propertyName) {
+        var result = parent[propertyName];
+        if (result == null) {
+          return result;
+        }
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return result;
+        }
+
+        if (protoAccess.resultIsAllowed(result, container.protoAccessControl, propertyName)) {
+          return result;
+        }
+        return undefined;
       },
       lookup: function lookup(depths, name) {
         var len = depths.length;
         for (var i = 0; i < len; i++) {
-          if (depths[i] && depths[i][name] != null) {
+          var result = depths[i] && container.lookupProperty(depths[i], name);
+          if (result != null) {
             return depths[i][name];
           }
         }
@@ -962,6 +1169,15 @@
         }
         return value;
       },
+      mergeIfNeeded: function mergeIfNeeded(param, common) {
+        var obj = param || common;
+
+        if (param && common && param !== common) {
+          obj = Utils.extend({}, common, param);
+        }
+
+        return obj;
+      },
       // An empty object to use as replacement for null-contexts
       nullContext: Object.seal({}),
 
@@ -991,28 +1207,35 @@
       function main(context /*, options*/) {
         return '' + templateSpec.main(container, context, container.helpers, container.partials, data, blockParams, depths);
       }
+
       main = executeDecorators(templateSpec.main, main, container, options.depths || [], data, blockParams);
       return main(context, options);
     }
+
     ret.isTop = true;
 
     ret._setup = function (options) {
       if (!options.partial) {
-        container.helpers = Utils.extend({}, env.helpers, options.helpers);
+        var mergedHelpers = Utils.extend({}, env.helpers, options.helpers);
+        wrapHelpersToPassLookupProperty(mergedHelpers, container);
+        container.helpers = mergedHelpers;
 
         if (templateSpec.usePartial) {
-          container.partials = Utils.extend({}, env.partials, options.partials);
+          // Use mergeIfNeeded here to prevent compiling global partials multiple times
+          container.partials = container.mergeIfNeeded(options.partials, env.partials);
         }
         if (templateSpec.usePartial || templateSpec.useDecorators) {
           container.decorators = Utils.extend({}, env.decorators, options.decorators);
         }
 
         container.hooks = {};
+        container.protoAccessControl = protoAccess.createProtoAccessControl(options);
 
         var keepHelperInHelpers = options.allowCallsToHelperMissing || templateWasPrecompiledWithCompilerV7;
         helpers.moveHelperToHooks(container, 'helperMissing', keepHelperInHelpers);
         helpers.moveHelperToHooks(container, 'blockHelperMissing', keepHelperInHelpers);
       } else {
+        container.protoAccessControl = options.protoAccessControl; // internal option
         container.helpers = options.helpers;
         container.partials = options.partials;
         container.decorators = options.decorators;
@@ -1133,6 +1356,20 @@
     return prog;
   }
 
+  function wrapHelpersToPassLookupProperty(mergedHelpers, container) {
+    Object.keys(mergedHelpers).forEach(function (helperName) {
+      var helper = mergedHelpers[helperName];
+      mergedHelpers[helperName] = passLookupPropertyOption(helper, container);
+    });
+  }
+
+  function passLookupPropertyOption(helper, container) {
+    var lookupProperty = container.lookupProperty;
+    return wrapHelper_1.wrapHelper(helper, function (options) {
+      return Utils.extend({ lookupProperty: lookupProperty }, options);
+    });
+  }
+
   });
 
   unwrapExports(runtime);
@@ -1241,97 +1478,157 @@
   var runtime$1 = handlebars_runtime['default'];
 
   var Template = runtime$1.template({"1":function(container,depth0,helpers,partials,data) {
-      var stack1, alias1=container.propertyIsEnumerable, alias2=container.lambda, alias3=container.escapeExpression;
+      var stack1, alias1=container.lambda, alias2=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+          if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+            return parent[propertyName];
+          }
+          return undefined
+      };
 
     return "\n  <p>"
-      + alias3(alias2(((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wikiSummary : stack1)) != null ? stack1.summary : stack1), depth0))
+      + alias2(alias1(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSummary") : stack1)) != null ? lookupProperty(stack1,"summary") : stack1), depth0))
       + " <span class=\"wiki-summary__link\"><a href=\""
-      + alias3(alias2(((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wikiSummary : stack1)) != null ? stack1.link : stack1), depth0))
+      + alias2(alias1(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSummary") : stack1)) != null ? lookupProperty(stack1,"link") : stack1), depth0))
       + "\" target=\"_blank\">"
-      + alias3(alias2(((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wikiSummary : stack1)) != null ? stack1.title : stack1), depth0))
+      + alias2(alias1(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSummary") : stack1)) != null ? lookupProperty(stack1,"title") : stack1), depth0))
       + " on Wikipedia &raquo;</a></span></p>\n";
   },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-      var stack1, alias1=container.propertyIsEnumerable;
+      var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+          if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+            return parent[propertyName];
+          }
+          return undefined
+      };
 
-    return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wikiSummary : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+    return ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSummary") : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":1,"column":0},"end":{"line":5,"column":7}}})) != null ? stack1 : "");
   },"useData":true});
   runtime$1.registerPartial('/_wikiSummary', Template);
 
   var Template$1 = runtime$1.template({"1":function(container,depth0,helpers,partials,data) {
-      var stack1, alias1=container.propertyIsEnumerable;
+      var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+          if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+            return parent[propertyName];
+          }
+          return undefined
+      };
 
     return "\n  <h4 class=\"wiki-search__header\">More Wikipedia Results</h4>\n\n  <ul>\n"
-      + ((stack1 = helpers.each.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wikiSearch : stack1),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"each").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSearch") : stack1),{"name":"each","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":6,"column":4},"end":{"line":8,"column":13}}})) != null ? stack1 : "")
       + "  </ul>\n";
   },"2":function(container,depth0,helpers,partials,data) {
-      var alias1=container.propertyIsEnumerable, alias2=container.lambda, alias3=container.escapeExpression;
+      var alias1=container.lambda, alias2=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+          if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+            return parent[propertyName];
+          }
+          return undefined
+      };
 
     return "      <li><a href=\""
-      + alias3(alias2((depth0 != null ? depth0.link : depth0), depth0))
+      + alias2(alias1((depth0 != null ? lookupProperty(depth0,"link") : depth0), depth0))
       + "\" target=\"_blank\">"
-      + alias3(alias2((depth0 != null ? depth0.title : depth0), depth0))
+      + alias2(alias1((depth0 != null ? lookupProperty(depth0,"title") : depth0), depth0))
       + "</a></li>\n";
   },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-      var stack1, alias1=container.propertyIsEnumerable;
+      var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+          if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+            return parent[propertyName];
+          }
+          return undefined
+      };
 
-    return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wikiSearch : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+    return ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSearch") : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":1,"column":2},"end":{"line":10,"column":9}}})) != null ? stack1 : "");
   },"useData":true});
   runtime$1.registerPartial('/_wikiSearch', Template$1);
 
   var Template$2 = runtime$1.template({"1":function(container,depth0,helpers,partials,data) {
-      var stack1, alias1=container.propertyIsEnumerable, alias2=depth0 != null ? depth0 : (container.nullContext || {});
+      var stack1, alias1=depth0 != null ? depth0 : (container.nullContext || {}), lookupProperty = container.lookupProperty || function(parent, propertyName) {
+          if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+            return parent[propertyName];
+          }
+          return undefined
+      };
 
     return "\n"
-      + ((stack1 = helpers["if"].call(alias2,((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.cons : stack1),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"cons") : stack1),{"name":"if","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":3,"column":4},"end":{"line":5,"column":11}}})) != null ? stack1 : "")
       + "\n"
-      + ((stack1 = helpers["if"].call(alias2,((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.pronunciation : stack1),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"pronunciation") : stack1),{"name":"if","hash":{},"fn":container.program(4, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":7,"column":4},"end":{"line":9,"column":11}}})) != null ? stack1 : "")
       + "\n"
-      + ((stack1 = helpers["if"].call(alias2,((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.fl : stack1),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"fl") : stack1),{"name":"if","hash":{},"fn":container.program(6, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":11,"column":4},"end":{"line":13,"column":11}}})) != null ? stack1 : "")
       + "\n    <ul>\n"
-      + ((stack1 = helpers.each.call(alias2,((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.shortdef : stack1),{"name":"each","hash":{},"fn":container.program(8, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"each").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"shortdef") : stack1),{"name":"each","hash":{},"fn":container.program(8, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":16,"column":6},"end":{"line":18,"column":15}}})) != null ? stack1 : "")
       + "    </ul>\n    \n    <a class=\"dictionary__more-link\" href=\""
-      + container.escapeExpression(container.lambda(((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.link : stack1), depth0))
+      + container.escapeExpression(container.lambda(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"link") : stack1), depth0))
       + "\" target=\"_blank\">Find out more &raquo;</a>\n";
   },"2":function(container,depth0,helpers,partials,data) {
-      var stack1, alias1=container.propertyIsEnumerable;
+      var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+          if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+            return parent[propertyName];
+          }
+          return undefined
+      };
 
     return "    <h4 class=\"dictionary__header\">"
-      + container.escapeExpression(container.lambda(((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.cons : stack1), depth0))
+      + container.escapeExpression(container.lambda(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"cons") : stack1), depth0))
       + "</h4>\n";
   },"4":function(container,depth0,helpers,partials,data) {
-      var stack1, alias1=container.propertyIsEnumerable;
+      var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+          if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+            return parent[propertyName];
+          }
+          return undefined
+      };
 
     return "    <h5 class=\"dictionary__pronunciation\">[/"
-      + container.escapeExpression(container.lambda(((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.pronunciation : stack1), depth0))
+      + container.escapeExpression(container.lambda(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"pronunciation") : stack1), depth0))
       + "/]</h5>\n";
   },"6":function(container,depth0,helpers,partials,data) {
-      var stack1, alias1=container.propertyIsEnumerable;
+      var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+          if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+            return parent[propertyName];
+          }
+          return undefined
+      };
 
     return "    <p class=\"dictionary__type\">"
-      + container.escapeExpression(container.lambda(((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.fl : stack1), depth0))
+      + container.escapeExpression(container.lambda(((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"fl") : stack1), depth0))
       + "</p>\n";
   },"8":function(container,depth0,helpers,partials,data) {
       return "        <li>"
       + container.escapeExpression(container.lambda(depth0, depth0))
       + "</li>\n";
   },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-      var stack1, alias1=container.propertyIsEnumerable;
+      var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+          if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+            return parent[propertyName];
+          }
+          return undefined
+      };
 
-    return ((stack1 = helpers["if"].call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.shortdef : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+    return ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"shortdef") : stack1),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":1,"column":2},"end":{"line":22,"column":9}}})) != null ? stack1 : "")
       + "  ";
   },"useData":true});
   runtime$1.registerPartial('/_dictionary', Template$2);
 
   var Template$3 = runtime$1.template({"1":function(container,depth0,helpers,partials,data) {
-      var stack1, alias1=container.propertyIsEnumerable;
+      var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+          if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+            return parent[propertyName];
+          }
+          return undefined
+      };
 
-    return ((stack1 = helpers.unless.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.shortDef : stack1),{"name":"unless","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+    return ((stack1 = lookupProperty(helpers,"unless").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"shortDef") : stack1),{"name":"unless","hash":{},"fn":container.program(2, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":2,"column":4},"end":{"line":4,"column":15}}})) != null ? stack1 : "");
   },"2":function(container,depth0,helpers,partials,data) {
       return "      <p>Sorry, no results found.</p>\n";
   },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-      var stack1, alias1=container.propertyIsEnumerable;
+      var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+          if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+            return parent[propertyName];
+          }
+          return undefined
+      };
 
-    return ((stack1 = helpers.unless.call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.wikiSearch : stack1),{"name":"unless","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "");
+    return ((stack1 = lookupProperty(helpers,"unless").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"wikiSearch") : stack1),{"name":"unless","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":1,"column":2},"end":{"line":5,"column":13}}})) != null ? stack1 : "");
   },"useData":true});
   runtime$1.registerPartial('/_noresults', Template$3);
 
@@ -1340,26 +1637,36 @@
   },"3":function(container,depth0,helpers,partials,data) {
       return "<div disabled class=\"trjs-popover\">\n";
   },"5":function(container,depth0,helpers,partials,data) {
-      var stack1;
+      var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+          if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+            return parent[propertyName];
+          }
+          return undefined
+      };
 
     return "  <div class=\"dictionary fadeInAnimated\">\n    <hr>\n"
-      + ((stack1 = container.invokePartial(partials["/_dictionary"],depth0,{"name":"/_dictionary","data":data,"indent":"    ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
+      + ((stack1 = container.invokePartial(lookupProperty(partials,"/_dictionary"),depth0,{"name":"/_dictionary","data":data,"indent":"    ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
       + "  </div>\n";
   },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
-      var stack1, helper, alias1=container.propertyIsEnumerable, alias2=depth0 != null ? depth0 : (container.nullContext || {});
+      var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), lookupProperty = container.lookupProperty || function(parent, propertyName) {
+          if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+            return parent[propertyName];
+          }
+          return undefined
+      };
 
     return "\n"
-      + ((stack1 = helpers["if"].call(alias2,(depth0 != null ? depth0.dark : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"dark") : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data,"loc":{"start":{"line":2,"column":0},"end":{"line":6,"column":7}}})) != null ? stack1 : "")
       + "\n  <div id=\"trjs-close\">\n    <svg class=\"icon icon-cancel-circle\">\n      <path d=\"M16 0c-8.837 0-16 7.163-16 16s7.163 16 16 16 16-7.163 16-16-7.163-16-16-16zM16 29c-7.18 0-13-5.82-13-13s5.82-13 13-13 13 5.82 13 13-5.82 13-13 13z\"></path>\n      <path d=\"M21 8l-5 5-5-5-3 3 5 5-5 5 3 3 5-5 5 5 3-3-5-5 5-5z\"></path>\n    </svg>\n  </div>\n  \n  <h4 class=\"trjs__header fadeInAnimated\">"
-      + container.escapeExpression(((helper = (helper = helpers.selected || (depth0 != null ? depth0.selected : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(alias2,{"name":"selected","hash":{},"data":data}) : helper)))
+      + container.escapeExpression(((helper = (helper = lookupProperty(helpers,"selected") || (depth0 != null ? lookupProperty(depth0,"selected") : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"selected","hash":{},"data":data,"loc":{"start":{"line":15,"column":42},"end":{"line":15,"column":56}}}) : helper)))
       + "</h4>\n\n  <div class=\"wiki-summary fadeInAnimated\">\n"
-      + ((stack1 = container.invokePartial(partials["/_wikiSummary"],depth0,{"name":"/_wikiSummary","data":data,"indent":"    ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
+      + ((stack1 = container.invokePartial(lookupProperty(partials,"/_wikiSummary"),depth0,{"name":"/_wikiSummary","data":data,"indent":"    ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
       + "\n"
-      + ((stack1 = container.invokePartial(partials["/_wikiSearch"],depth0,{"name":"/_wikiSearch","data":data,"indent":"    ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
+      + ((stack1 = container.invokePartial(lookupProperty(partials,"/_wikiSearch"),depth0,{"name":"/_wikiSearch","data":data,"indent":"    ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
       + "  </div>\n\n"
-      + ((stack1 = helpers["if"].call(alias2,((stack1 = ((stack1 = (depth0 != null ? depth0.data : depth0)) != null ? stack1.dictionary : stack1)) != null ? stack1.shortdef : stack1),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"shortdef") : stack1),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":23,"column":2},"end":{"line":28,"column":9}}})) != null ? stack1 : "")
       + "\n"
-      + ((stack1 = container.invokePartial(partials["/_noresults"],depth0,{"name":"/_noresults","data":data,"indent":"  ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
+      + ((stack1 = container.invokePartial(lookupProperty(partials,"/_noresults"),depth0,{"name":"/_noresults","data":data,"indent":"  ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
       + "\n</div>";
   },"usePartial":true,"useData":true});
   function PopoverTemplate(data, options, asString) {
