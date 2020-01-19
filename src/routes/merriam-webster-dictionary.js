@@ -10,7 +10,7 @@ const MerriamWebsterDictionary = {
       key: options.key
     };
 
-    let dictionaryRoute = `${this.baseUrl}/${options.searchText}?`;
+    let dictionaryRoute = `${this.baseUrl}/${encodeURIComponent(options.searchText)}?`;
     Object.keys(params).forEach((key) => {dictionaryRoute += "&" + key + "=" + params[key];});
     return dictionaryRoute;
   },

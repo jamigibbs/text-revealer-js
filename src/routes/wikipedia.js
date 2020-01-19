@@ -9,7 +9,7 @@ const Wikipedia = {
   searchRoute: function(search) {
     const params = {
       action: 'opensearch',
-      search,
+      search: encodeURIComponent(search),
       limit: '5',
       namespace: '0',
       format: 'json'
