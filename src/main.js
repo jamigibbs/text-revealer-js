@@ -35,12 +35,6 @@ function TextRevealer(options = {}) {
 
   return {
     init: function() {
-
-      /**
-       * Bail if script is already loaded.
-       */
-      if (typeof window.TextRevealer == 'function') return;
-      
       /**
        * Bail if user is on a mobile device. This script does not support touch devices.
        */
