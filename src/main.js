@@ -37,6 +37,11 @@ function TextRevealer(options = {}) {
     init: function() {
 
       /**
+       * Bail if script is already loaded.
+       */
+      if (typeof window.TextRevealer == 'function') return;
+      
+      /**
        * Bail if user is on a mobile device. This script does not support touch devices.
        */
       const isMobile = window.matchMedia("only screen and (max-width: 1024px)").matches;
