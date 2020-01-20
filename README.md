@@ -6,6 +6,8 @@ Reveal deeper information about highlighted text on a web page. When text is sel
 - Dictionary definition
 - ...and more to come.
 
+[https://jamigibbs.github.io/text-revealer-js/](https://jamigibbs.github.io/text-revealer-js/)
+
 <img src="preview.gif" alt="Preview" width="700"/>
 
 ## Getting Started
