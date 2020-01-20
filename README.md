@@ -10,7 +10,9 @@ Reveal deeper information about highlighted text on a web page. When text is sel
 
 <img src="preview.gif" alt="Preview" width="700"/>
 
-## Getting Started
+### Getting Started
+
+#### Local Development
 
 Install dependencies:
 
@@ -19,6 +21,8 @@ Install dependencies:
 Generate compiled script and style:
 
 `npm run build`
+
+#### Install on a single website
 
 Load script and stylesheet:
 
@@ -40,7 +44,11 @@ Assign options and initialize the script:
   myTextRevealer.init();
 ```
 
-## Usage with Witchcraft 
+#### Install across all website
+
+The script is most helpful while using it as you're surfing the web. There are several different ways to inject the script so that it loads on all websites. Here's an example with the [Witchcraft](https://luciopaiva.com/witchcraft/) Chrome extension:
+
+**Usage with Witchcraft**
 
 [Witchcraft](https://luciopaiva.com/witchcraft/) is a Google Chrome extension for loading custom Javascript and CSS directly from a folder in your file system and injecting them into pages.
 
@@ -61,4 +69,19 @@ Then create a file called `_global.js` and add to it the following (where you ca
   });
 
   myTextRevealer.init();
+```
+
+### Options
+
+```js
+  const myTextRevealer = new TextRevealer({ 
+    delay: 500, // milliseconds delay before the popover displays.
+    scrollIntoView: true, // positions the popover into view when set to true.
+    approvedTags: ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','pre','b','strong'] // array of html tags.
+    disabledTags: ['input', 'textarea', 'code', 'a'] // array of html tags.
+    wikipedia: false, // Set to true for fetching wiki info.
+    merriamWebsterDictionary: false,  // Provide an API key for fetching dictionary info; https://dictionaryapi.com/
+    skin: 'light', // Popover skin; 'light' or 'dark'.
+    maxTextCount: 3 // When text is highlighted, the max number of words allowed.
+  });
 ```
