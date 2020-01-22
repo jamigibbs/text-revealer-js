@@ -34,6 +34,8 @@ function TextRevealer(options = {}) {
   this.searchTextCount = 0;
 
   return {
+    options: this.options,
+    
     init: function() {
       /**
        * Bail if user is on a mobile device. This script does not support touch devices.
