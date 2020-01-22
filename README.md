@@ -8,6 +8,13 @@ Reveal deeper information about highlighted text on a web page. When text is sel
 
 [https://jamigibbs.github.io/text-revealer-js/](https://jamigibbs.github.io/text-revealer-js/)
 
+### Features TODO
+
+- [ ] OMDb API
+- [ ] Chrome Extension
+
+### Preview
+
 <img src="preview.gif" alt="Preview" width="700"/>
 
 ### Getting Started
