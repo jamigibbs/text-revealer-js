@@ -37,12 +37,18 @@ $z-index-9999: 9999;
   -moz-user-select: none;
   z-index: $z-index-9999;
   a {
-    color: $color-red;
-    font-weight: normal;
-    text-decoration: none;
-    transition: color .4s ease;
+    background: none!important;
+    color: $color-red!important;
+    font-weight: normal!important;
+    text-decoration: none!important;
+    transition: color .4s ease!important;
     &:hover {
-      color: $color-red-light;
+      color: $color-red-light!important;
+    }
+    &:not(.btn) {
+      color: $color-red!important;
+      display: block!important;
+      padding: 0!important;
     }
   }
   p {
