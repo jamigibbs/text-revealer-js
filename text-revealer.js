@@ -1653,15 +1653,15 @@ var TextRevealer = (function () {
       };
 
     return "\n"
-      + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"dark") : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data,"loc":{"start":{"line":2,"column":0},"end":{"line":6,"column":7}}})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"dark") : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data,"loc":{"source":"popover.hbs","start":{"line":2,"column":0},"end":{"line":6,"column":7}}})) != null ? stack1 : "")
       + "\n  <div id=\"trjs-close\">\n    <svg class=\"icon icon-cancel-circle\">\n      <path d=\"M16 0c-8.837 0-16 7.163-16 16s7.163 16 16 16 16-7.163 16-16-7.163-16-16-16zM16 29c-7.18 0-13-5.82-13-13s5.82-13 13-13 13 5.82 13 13-5.82 13-13 13z\"></path>\n      <path d=\"M21 8l-5 5-5-5-3 3 5 5-5 5 3 3 5-5 5 5 3-3-5-5 5-5z\"></path>\n    </svg>\n  </div>\n  \n  <h4 class=\"trjs__header fadeInAnimated\">"
-      + container.escapeExpression(((helper = (helper = lookupProperty(helpers,"selected") || (depth0 != null ? lookupProperty(depth0,"selected") : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"selected","hash":{},"data":data,"loc":{"start":{"line":15,"column":42},"end":{"line":15,"column":56}}}) : helper)))
+      + container.escapeExpression(((helper = (helper = lookupProperty(helpers,"selected") || (depth0 != null ? lookupProperty(depth0,"selected") : depth0)) != null ? helper : container.hooks.helperMissing),(typeof helper === "function" ? helper.call(alias1,{"name":"selected","hash":{},"data":data,"loc":{"source":"popover.hbs","start":{"line":15,"column":42},"end":{"line":15,"column":56}}}) : helper)))
       + "</h4>\n\n  <div class=\"wiki-summary fadeInAnimated\">\n"
       + ((stack1 = container.invokePartial(lookupProperty(partials,"/_wikiSummary"),depth0,{"name":"/_wikiSummary","data":data,"indent":"    ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
       + "\n"
       + ((stack1 = container.invokePartial(lookupProperty(partials,"/_wikiSearch"),depth0,{"name":"/_wikiSearch","data":data,"indent":"    ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
       + "  </div>\n\n"
-      + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"shortdef") : stack1),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":23,"column":2},"end":{"line":28,"column":9}}})) != null ? stack1 : "")
+      + ((stack1 = lookupProperty(helpers,"if").call(alias1,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"data") : depth0)) != null ? lookupProperty(stack1,"dictionary") : stack1)) != null ? lookupProperty(stack1,"shortdef") : stack1),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data,"loc":{"source":"popover.hbs","start":{"line":23,"column":2},"end":{"line":28,"column":9}}})) != null ? stack1 : "")
       + "\n"
       + ((stack1 = container.invokePartial(lookupProperty(partials,"/_noresults"),depth0,{"name":"/_noresults","data":data,"indent":"  ","helpers":helpers,"partials":partials,"decorators":container.decorators})) != null ? stack1 : "")
       + "\n</div>";
@@ -1779,7 +1779,7 @@ var TextRevealer = (function () {
 
   };
 
-  const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','pre','b','strong'];
+  const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','pre','b','strong', 'em'];
   const DEFAULT_DISABLED_TAGS = ['input', 'textarea', 'code', 'a'];
 
   const TextRevealer = function(options = {}) {
