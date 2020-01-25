@@ -15,7 +15,7 @@ Reveal deeper information about highlighted text on a web page. When text is sel
 
 ### Preview
 
-<img src="preview.gif" alt="Preview" width="700"/>
+<img src="preview.gif" alt="Preview" />
 
 ### Getting Started
 
