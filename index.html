@@ -1,6 +1,15 @@
 <!doctype html>
 <html>
   <head>
+
+      <link rel="icon" type="image/png" href="favicon.png">
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta property="og:image" content="logo.png"/>
+    <meta name="keywords" content="text, revelaer, javascript, wikipedia, dictionary, merriam webster, TextRevealer"/>
+    <meta name="description" content="Text Revealer - Reveal deeper information about highlighted text on a web page. When text is selected, a popover displays useful details about the text such as Wikipedia entires and dictionary definition."/>
+    <meta name="viewport" content="width=device-width, initial-scale=0.5"/>
     
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-3363703-55"></script>
@@ -60,6 +69,11 @@
         width: 550px;
         margin: 0 auto;
       }
+      #logo {
+        margin: 0 auto;
+        display: table;
+        margin-top: 20px
+      }
       #footer {
         text-align: center;
       }
@@ -79,9 +93,17 @@
     <div id="main">
 
         <header>
-          <h1>Text Revealer JS</h1>
-          <p>Turn the script on from the toggle positioned at the lower left corner of the screen. Reveal deeper information about highlighted text on a web page. When text is selected, a popover displays useful details about the text such as Wikipedia entires and dictionary definition.</p>
+
+          <div id="logo">
+              <img src="logo.png" title="Text Revealer" width=400 />
+          </div>
+          
+          <p>Reveal deeper information about highlighted text on a web page. When text is selected, a popover displays useful details about the text such as Wikipedia entires and dictionary definition.</p>
+
+          <p>Turn the script on/off from the toggle positioned at the lower left corner of the screen. </p>
         </header>
+
+        <hr>
 
         <div class="options-demo">
             <h3>Popover Skin Options</h3>
