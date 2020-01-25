@@ -1,4 +1,4 @@
-# Text Revealer JS
+<img src="logo.png" alt="Text Revealer" width="300"/>
 
 Reveal deeper information about highlighted text on a web page. When text is selected, a popover displays useful details about the text such as:
 
@@ -10,7 +10,7 @@ Reveal deeper information about highlighted text on a web page. When text is sel
 
 ### Features TODO
 
-- [ ] OMDb API
+- [ ] Twitter search API
 - [ ] Chrome Extension
 
 ### Preview
