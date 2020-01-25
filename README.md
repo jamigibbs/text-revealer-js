@@ -15,7 +15,7 @@ Reveal deeper information about highlighted text on a web page. When text is sel
 
 ### Preview
 
-<img src="preview.gif" alt="Preview" />
+[<img src="preview.gif" alt="Preview" />](https://jamigibbs.github.io/text-revealer-js/)
 
 ### Getting Started
 
