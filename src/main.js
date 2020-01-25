@@ -7,7 +7,7 @@ import MerriamWebsterDictionary from './routes/merriam-webster-dictionary';
 const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','pre','b','strong'];
 const DEFAULT_DISABLED_TAGS = ['input', 'textarea', 'code', 'a'];
 
-function TextRevealer(options = {}) {
+const TextRevealer = function(options = {}) {
   
   this.options = options = Object.assign({}, options);
 
@@ -35,7 +35,7 @@ function TextRevealer(options = {}) {
 
   return {
     options: this.options,
-    
+
     init: function() {
       /**
        * Bail if user is on a mobile device. This script does not support touch devices.

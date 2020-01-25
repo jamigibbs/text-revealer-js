@@ -14,8 +14,8 @@ var partialRoots = [`${__dirname}/src/views`];
 module.exports = {
   input: 'src/main.js',
   output: [
-    {file: 'text-revealer.js', format: 'umd',  name: 'TextRevealer'},
-    {file: 'text-revealer.min.js', format: 'umd',  name: 'TextRevealer' }
+    {file: 'text-revealer.js', format: 'iife',  name: 'TextRevealer'},
+    {file: 'text-revealer.min.js', format: 'iife',  name: 'TextRevealer' }
   ],
   plugins: [
     builtins(),
