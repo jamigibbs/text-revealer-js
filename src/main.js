@@ -4,7 +4,7 @@ import ToggleTemplate from './views/toggle.hbs';
 import Wikipedia from './routes/wikipedia';
 import MerriamWebsterDictionary from './routes/merriam-webster-dictionary';
 
-const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','pre','b','strong'];
+const DEFAULT_APPROVED_TAGS = ['div','p','span','h1','h2','h3','h4','h5','h6','header','li','pre','b','strong', 'em'];
 const DEFAULT_DISABLED_TAGS = ['input', 'textarea', 'code', 'a'];
 
 const TextRevealer = function(options = {}) {
