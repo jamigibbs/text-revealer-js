@@ -1,4 +1,4 @@
-<img src="logo.png" alt="Text Revealer" width="300"/>
+<img src="logo.jpg" alt="Text Revealer" width="100%"/>
 
 Reveal deeper information about highlighted text on a web page. When text is selected, a popover displays useful details about the text such as:
 
