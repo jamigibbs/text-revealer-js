@@ -1,5 +1,7 @@
 <img src="logo.jpg" alt="Text Revealer" width="100%"/>
 
+# TextRevealer.js
+
 Reveal deeper information about highlighted text on a web page. When text is selected, a popover displays useful details about the text such as:
 
 - Wikipedia entries
@@ -8,39 +10,38 @@ Reveal deeper information about highlighted text on a web page. When text is sel
 
 Demo: [https://jamigibbs.github.io/text-revealer-js/](https://jamigibbs.github.io/text-revealer-js/)
 
-Chrome Extension Available: [https://github.com/jamigibbs/text-revealer-chrome-extension](https://github.com/jamigibbs/text-revealer-chrome-extension)
+This is the vanilla JavaScript version. This script has been ported to a Chrome Extension available here: [https://github.com/jamigibbs/text-revealer-chrome-extension](https://github.com/jamigibbs/text-revealer-chrome-extension)
 
-### Features TODO
-
-- [X] Chrome Extension
-- [ ] Twitter search API
-
-### Preview
+## Preview
 
 [<img src="preview.gif" alt="Preview" />](https://jamigibbs.github.io/text-revealer-js/)
 
-### Getting Started
+## Getting Started
 
-#### Local Development
+### Local Development
 
-Install dependencies:
+#### 1. Clone this repository and install dependencies in that directory:
 
-`npm install`
+```
+npm install
+```
 
-Generate compiled script and style:
+#### 2. Generate compiled script and style:
 
-`npm run build`
+```
+npm run build
+```
 
-#### Install on a single website
+#### 3.  (options A) Install on a single website
 
-Load script and stylesheet:
+Load script and stylesheet before the `</head>` or `</body>` tags of the site:
 
 ```html
   <link href="text-revealer.css" rel="stylesheet">
   <script src="text-revealer.js"></script>
 ```
 
-Assign options and initialize the script:
+Initialize the script by adding the following between `<script></script>` tags placed before the closing `</body>` tag:
 
 ```js
   const myTextRevealer = new TextRevealer({ 
@@ -53,9 +54,20 @@ Assign options and initialize the script:
   myTextRevealer.init();
 ```
 
-#### Install across all website
+#### 3. (option B) Install across all website
 
-The script is most helpful while using it as you're surfing the web. There are several different ways to inject the script so that it loads on all websites. Here's an example with the [Witchcraft](https://luciopaiva.com/witchcraft/) Chrome extension:
+The script is most helpful while using it as you're surfing the web. You can look up words or phrases as you're navigating without leaving the page. 
+
+#### The Text Revealer Chrome Extension
+
+This script has been ported to a Chrome Extension and is available from the following respository:
+
+[https://github.com/jamigibbs/text-revealer-chrome-extension](https://github.com/jamigibbs/text-revealer-chrome-extension)
+
+
+#### Install with the Witchcraft Chrome Extension
+
+There are several different ways to inject the script so that it loads on all websites. Here's an example with the [Witchcraft](https://luciopaiva.com/witchcraft/) Chrome extension:
 
 **Usage with Witchcraft**
 
@@ -80,7 +92,7 @@ Then create a file called `_global.js` and add to it the following (where you ca
   myTextRevealer.init();
 ```
 
-### Options
+## Options
 
 ```js
   const myTextRevealer = new TextRevealer({ 
@@ -94,3 +106,7 @@ Then create a file called `_global.js` and add to it the following (where you ca
     maxTextCount: 3 // When text is highlighted, the max number of words allowed.
   });
 ```
+
+## Call for help
+
+Because this script is intended to be loaded across a wide variety of sites, it's difficult for a single person to test it against all of the many possibilities that it could encounter. So if you find an issue whether it be CSS or scripting, please [log an issue](https://github.com/jamigibbs/text-revealer-js/issues/new) that includes the URL, screenshots, and a detailed explanation of the the issue you're seeing.
