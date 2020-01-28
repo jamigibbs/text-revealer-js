@@ -1,23 +1,22 @@
-  {{#if data.dictionary.shortdef}}
 
-    {{#if data.dictionary.cons}}
-    <h4 class="dictionary__header">{{data.dictionary.cons}}</h4>
-    {{/if}}
+{{#if data.dictionary.cons}}
+<h4 class="dictionary__header">{{data.dictionary.cons}}</h4>
+{{/if}}
 
-    {{#if data.dictionary.pronunciation}}
-    <h5 class="dictionary__pronunciation">[/{{data.dictionary.pronunciation}}/]</h5>
-    {{/if}}
+{{#if data.dictionary.pronunciation}}
+<h5 class="dictionary__pronunciation">[/{{data.dictionary.pronunciation}}/]</h5>
+{{/if}}
 
-    {{#if data.dictionary.fl}}
-    <p class="dictionary__type">{{data.dictionary.fl}}</p>
-    {{/if}}
+{{#if data.dictionary.fl}}
+<p class="dictionary__type">{{data.dictionary.fl}}</p>
+{{/if}}
 
-    <ul>
-      {{#each data.dictionary.shortdef}}
-        <li>{{this}}</li>
-      {{/each}}
-    </ul>
-    
-    <a class="dictionary__more-link" href="{{data.dictionary.link}}" target="_blank">Find out more &raquo;</a>
-  {{/if}}
+<ul>
+  {{#each data.dictionary.shortdef}}
+    <li>{{this}}</li>
+  {{/each}}
+</ul>
+
+<a class="dictionary__more-link" href="{{data.dictionary.link}}" target="_blank">Find out more &raquo;</a>
+
   

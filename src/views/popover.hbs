@@ -14,11 +14,13 @@
   
   <h4 class="trjs__header fadeInAnimated">{{ selected }}</h4>
 
+  {{#if data.wikiSummary}}
   <div class="wiki-summary fadeInAnimated">
     {{>'/_wikiSummary'}}
 
     {{>'/_wikiSearch'}}
   </div>
+  {{/if}}
 
   {{#if data.dictionary.shortdef}}
   <div class="dictionary fadeInAnimated">
