@@ -281,7 +281,7 @@ $z-index-9999: 9999;
       transition: .4s;
     }
     &.round {
-      border-radius: 34px;
+      border-radius: 34px!important;
       &:before {
         border-radius: 50%;
       }
