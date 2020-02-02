@@ -218,7 +218,7 @@ const TextRevealer = function(options = {}) {
                     .then((data) => {
                       formattedResults.wikiSummary = {
                         title: formattedResults.wikiSearch[0].title,
-                        summary: data.extract,
+                        summary: this.trimString(data.extract, 300),
                         link: formattedResults.wikiSearch[0].link
                       }
                       /**
@@ -404,6 +404,17 @@ const TextRevealer = function(options = {}) {
           popover.style.left = '0';
         }
       }
+    },
+
+    /**
+     * Trim a string to the maximum provided length without cutting off words.
+     * @param {String} str 
+     * @param {Number} maxLen 
+     * @param {String} separator
+     */
+    trimString(str, maxLen, separator = ' '){
+      if (str.length <= maxLen) return str;
+      return str.substr(0, str.lastIndexOf(separator, maxLen)) + ' ...';
     }
 
   }
