@@ -83,6 +83,10 @@ $z-index-9999: 9999;
     margin-bottom: 5px!important;
     margin-left: 15px!important;
     margin-right: 5px!important;
+    li {
+      margin-bottom: 0!important;
+      font-size: 16px!important;
+    }
   }
   dfn {
     display: inline-block;
@@ -281,7 +285,7 @@ $z-index-9999: 9999;
       transition: .4s;
     }
     &.round {
-      border-radius: 34px;
+      border-radius: 34px!important;
       &:before {
         border-radius: 50%;
       }
