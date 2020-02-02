@@ -1,6 +1,6 @@
 {
   "name": "text-revealer-js",
-  "version": "1.0.0-beta-200125",
+  "version": "1.0.0-beta-200128",
   "description": "Reveal deeper information about highlighted text on a web page.",
   "main": "main.js",
   "files": [
