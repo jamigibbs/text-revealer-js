@@ -33,7 +33,7 @@ module.exports = {
       partialRoot: partialRoots
     }),
     terser({
-      include: [/^.+\.min\.js$/, '*umd*'],
+      include: [/^.+\.min\.js$/, '*iife*'],
       keep_fnames: true
     })
   ]
