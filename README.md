@@ -1,4 +1,4 @@
-<img src="logo.jpg" alt="Text Revealer" width="100%"/>
+<img src="assets/logo.jpg" alt="Text Revealer" width="100%"/>
 
 # TextRevealer.js
 
